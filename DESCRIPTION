@@ -1,0 +1,15 @@
+Package: ConNIS
+Type: Package
+Title: Calculate the probabilites of non-insertion sequences in Tn5 transposon data
+Version: 0.1.0
+Author: Moritz Hanke
+Maintainer: Moritz Hanke <moritzhanke@icloud.com>
+Description: For each gene of a Tn5 trasnposon the probability of the biggest observed insertion free gap within the gene is calculated. Therefore the probability distribution of observing a sequence of misses for a finite number of fair Bernoulli trials given a total number of successes is used.
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Depends:
+    tidyverse (>= 2.0.0),
+    gmp (>= 0.7-4)
+License: MIT + file LICENSE
