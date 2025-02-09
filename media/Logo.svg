@@ -7,7 +7,6 @@
    viewBox="0 0 210 297"
    version="1.1"
    id="svg1"
-   sodipodi:docname="Logo.svg"
    inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -23,37 +22,17 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     showguides="true"
-     inkscape:zoom="0.55307694"
-     inkscape:cx="-221.48817"
-     inkscape:cy="414.04727"
-     inkscape:window-width="1848"
+     inkscape:zoom="0.27653847"
+     inkscape:cx="-150.06954"
+     inkscape:cy="1222.2531"
+     inkscape:window-width="1200"
      inkscape:window-height="1027"
-     inkscape:window-x="0"
-     inkscape:window-y="25"
+     inkscape:window-x="520"
+     inkscape:window-y="64"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
   <defs
      id="defs1">
-    <marker
-       style="overflow:visible"
-       id="marker7"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Rounded arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.7)"
-         d="m -0.21114562,-4.1055728 6.42229122,3.21114561 a 1,1 90 0 1 0,1.78885438 L -0.21114562,4.1055728 A 1.236068,1.236068 31.717474 0 1 -2,3 v -6 a 1.236068,1.236068 148.28253 0 1 1.78885438,-1.1055728 z"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         id="path7" />
-    </marker>
     <marker
        style="overflow:visible"
        id="RoundedArrow"
@@ -72,6 +51,25 @@
          d="m -0.21114562,-4.1055728 6.42229122,3.21114561 a 1,1 90 0 1 0,1.78885438 L -0.21114562,4.1055728 A 1.236068,1.236068 31.717474 0 1 -2,3 v -6 a 1.236068,1.236068 148.28253 0 1 1.78885438,-1.1055728 z"
          style="fill:context-stroke;fill-rule:evenodd;stroke:none"
          id="path8" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker7"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Rounded arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="m -0.21114562,-4.1055728 6.42229122,3.21114561 a 1,1 90 0 1 0,1.78885438 L -0.21114562,4.1055728 A 1.236068,1.236068 31.717474 0 1 -2,3 v -6 a 1.236068,1.236068 148.28253 0 1 1.78885438,-1.1055728 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="path7" />
     </marker>
     <marker
        style="overflow:visible"
@@ -131,11 +129,11 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 100.71901,164.08987 -62.156369,35.886 -62.156371,-35.886 0,-71.771995 62.156371,-35.885998 62.156369,35.885998 z"
-       transform="matrix(0.53288694,0,0,0.53288694,48.795573,94.205583)" />
+       transform="matrix(0.53288694,0,0,0.53288694,84.58261,80.16748)" />
     <g
        id="g9"
        style="stroke:#000000;stroke-opacity:1"
-       transform="matrix(0.53288694,0,0,0.53288694,16.529208,61.304359)">
+       transform="matrix(0.53288694,0,0,0.53288694,52.316245,47.26625)">
       <path
          style="fill:none;stroke:#000000;stroke-width:1.594;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
          d="M 144.97578,199.10411 V 177.85669"
@@ -187,11 +185,12 @@
     </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.895783;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
-       d="M 36.293415,167.33674 H 102.70268"
+       d="M 72.080452,153.29863 H 138.48972"
        id="path5" />
     <g
        id="g13"
-       style="stroke:#959eb4;stroke-opacity:1">
+       style="stroke:#959eb4;stroke-opacity:1"
+       transform="translate(35.78704,-14.03811)">
       <path
          style="fill:none;stroke:#959eb4;stroke-width:0.963188;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1.92638, 1.92638;stroke-dashoffset:0;stroke-opacity:1"
          d="M 85.218463,180.94145 V 166.38293"
@@ -207,7 +206,8 @@
     </g>
     <g
        id="g12"
-       style="stroke:#959eb4;stroke-opacity:1">
+       style="stroke:#959eb4;stroke-opacity:1"
+       transform="translate(35.78704,-14.03811)">
       <path
          style="fill:none;stroke:#959eb4;stroke-width:0.915441;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1.83088, 1.83088;stroke-dashoffset:0;stroke-opacity:1"
          d="M 87.458485,186.98814 V 167.20787"
@@ -224,7 +224,7 @@
     <g
        id="g10"
        style="fill:#336583;fill-opacity:1"
-       transform="matrix(0.53288694,0,0,0.53288694,16.529208,61.304359)">
+       transform="matrix(0.53288694,0,0,0.53288694,52.316245,47.26625)">
       <path
          sodipodi:type="star"
          style="fill:#336583;fill-opacity:1;stroke:none;stroke-width:1.34091;stroke-opacity:1"
@@ -304,14 +304,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12.9213px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#a7aec0;fill-opacity:1;stroke-width:1.05642;stroke-dasharray:none"
-       x="41.222404"
-       y="152.42734"
+       x="82.830276"
+       y="138.91841"
        id="text9"><tspan
          sodipodi:role="line"
          id="tspan9"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#a7aec0;fill-opacity:1;stroke-width:1.05642;stroke-dasharray:none"
-         x="41.222404"
-         y="152.42734">ConNIS</tspan></text>
+         x="82.830276"
+         y="138.91841">ConNIS</tspan></text>
     <path
        sodipodi:type="star"
        style="fill:none;fill-opacity:1;stroke:#336583;stroke-width:3.141;stroke-dasharray:none;stroke-opacity:1"
@@ -327,6 +327,6 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 100.71901,164.08987 -62.156369,35.886 -62.156371,-35.886 0,-71.771995 62.156371,-35.885998 62.156369,35.885998 z"
-       transform="matrix(0.53288694,0,0,0.53288694,48.795573,94.205583)" />
+       transform="matrix(0.53288694,0,0,0.53288694,84.58261,80.16748)" />
   </g>
 </svg>
