@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="167.52122mm"
-   height="193.43684mm"
-   viewBox="0 0 167.52122 193.43684"
+   width="167.92079mm"
+   height="193.89822mm"
+   viewBox="0 0 167.92079 193.89822"
    version="1.1"
    id="svg1"
    inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
@@ -26,9 +26,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="1.5643378"
-     inkscape:cx="410.07766"
-     inkscape:cy="534.41141"
+     inkscape:zoom="0.55307695"
+     inkscape:cx="116.6203"
+     inkscape:cy="359.80527"
      inkscape:window-width="1784"
      inkscape:window-height="1027"
      inkscape:window-x="34"
@@ -61,7 +61,7 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-23.815294,-45.678393)">
+     transform="translate(-23.61551,-45.447703)">
     <path
        sodipodi:type="star"
        style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3.141;stroke-dasharray:none;stroke-opacity:1"
@@ -281,7 +281,7 @@
          y="117.26088">ConNIS</tspan></text>
     <path
        sodipodi:type="star"
-       style="fill:none;fill-opacity:1;stroke:#23465a;stroke-width:3.141;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;fill-opacity:1;stroke:#23465a;stroke-width:3.445;stroke-dasharray:none;stroke-opacity:1"
        id="path9"
        inkscape:flatsided="true"
        sodipodi:sides="6"
