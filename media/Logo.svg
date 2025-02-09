@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="167.52122mm"
+   height="193.43684mm"
+   viewBox="0 0 167.52122 193.43684"
    version="1.1"
    id="svg1"
    inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
@@ -26,9 +26,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="1.5643378"
-     inkscape:cx="305.24097"
-     inkscape:cy="485.82856"
+     inkscape:zoom="0.39108446"
+     inkscape:cx="435.96721"
+     inkscape:cy="606.0072"
      inkscape:window-width="1784"
      inkscape:window-height="1027"
      inkscape:window-x="34"
@@ -117,7 +117,8 @@
   <g
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-23.815294,-45.678393)">
     <path
        sodipodi:type="star"
        style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3.141;stroke-dasharray:none;stroke-opacity:1"
@@ -133,8 +134,8 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 100.71901,164.08987 -62.156369,35.886 -62.156371,-35.886 0,-71.771995 62.156371,-35.885998 62.156369,35.885998 z"
-       transform="matrix(0.53288694,0,0,0.53288694,84.58261,80.16748)"
-       inkscape:export-filename="path9.pdf"
+       transform="matrix(1.3143688,0,0,1.3143688,56.890373,-26.110354)"
+       inkscape:export-filename="Logo.svg"
        inkscape:export-xdpi="116"
        inkscape:export-ydpi="116" />
     <path
@@ -152,14 +153,14 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 100.71901,164.08987 -62.156369,35.886 -62.156371,-35.886 0,-71.771995 62.156371,-35.885998 62.156369,35.885998 z"
-       transform="matrix(0.26644347,0,0,0.26644347,94.857374,114.32656)"
+       transform="matrix(0.65718438,0,0,0.65718438,82.233133,58.143224)"
        inkscape:export-filename="Logo.png"
        inkscape:export-xdpi="116"
        inkscape:export-ydpi="116" />
     <g
        id="g9"
        style="stroke:#000000;stroke-width:0.812555;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(0.53288694,0,0,0.53288694,52.316245,48.324584)">
+       transform="matrix(1.3143688,0,0,1.3143688,-22.694817,-104.65104)">
       <path
          style="fill:none;stroke:#000000;stroke-width:0.812555;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
          d="M 144.97578,199.10411 V 177.85669"
@@ -210,37 +211,37 @@
          id="path5-4-7-48" />
     </g>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.895783;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
-       d="M 72.080452,154.35697 H 138.48972"
+       style="fill:none;stroke:#000000;stroke-width:2.20945;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M 26.053723,156.87847 H 189.85257"
        id="path5" />
     <path
-       style="fill:none;stroke:#23465a;stroke-width:0.48844;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:0.976882, 0.976882;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 121.0055,167.29626 v -13.8931"
+       style="fill:none;stroke:#23465a;stroke-width:1.20474;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:2.40949, 2.40949;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 146.72764,188.7933 V 154.52589"
        id="path5-4-7-46" />
     <path
-       style="fill:none;stroke:#23465a;stroke-width:0.48844;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:0.976882, 0.976882;stroke-dashoffset:0;stroke-opacity:1"
-       d="M 93.910916,167.52832 V 153.63523"
+       style="fill:none;stroke:#23465a;stroke-width:1.20474;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:2.40949, 2.40949;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 79.898683,189.36568 V 155.09829"
        id="path5-4-7-84-7-1" />
     <path
-       style="fill:none;stroke:#23465a;stroke-width:0.474;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#RoundedArrow);marker-end:url(#marker7)"
-       d="m 97.24864,165.84837 h 20.59493"
+       style="fill:none;stroke:#23465a;stroke-width:1.16912;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#RoundedArrow);marker-end:url(#marker7)"
+       d="M 88.131213,185.22207 H 138.92872"
        id="path6" />
     <path
-       style="fill:#000000;fill-opacity:1;stroke:#5697bd;stroke-width:0.473654;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:0.947307, 0.947307;stroke-dashoffset:0;stroke-opacity:1"
-       d="M 123.63421,171.97876 V 154.2281"
+       style="fill:#000000;fill-opacity:1;stroke:#5697bd;stroke-width:1.16827;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:2.33654, 2.33654;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 153.21137,200.34272 V 156.56061"
        id="path5-4-7-46-3" />
     <path
-       style="fill:#000000;fill-opacity:1;stroke:#5697bd;stroke-width:0.473654;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:0.947302, 0.947302;stroke-dashoffset:0;stroke-opacity:1"
-       d="M 88.537313,171.7817 V 154.33048"
+       style="fill:#000000;fill-opacity:1;stroke:#5697bd;stroke-width:1.16827;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:2.33653, 2.33653;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 66.644663,199.85667 V 156.81313"
        id="path5-4-7-84-7-1-4" />
     <path
-       style="fill:#000000;fill-opacity:1;stroke:#5697bd;stroke-width:0.447;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#RoundedArrow-2);marker-end:url(#marker7-6)"
-       d="M 91.153595,170.54212 H 120.95042"
+       style="fill:#000000;fill-opacity:1;stroke:#5697bd;stroke-width:1.10253;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#RoundedArrow-2);marker-end:url(#marker7-6)"
+       d="M 73.097733,196.79923 H 146.59178"
        id="path6-1" />
     <g
        id="g2"
        style="fill:#112887;fill-opacity:1"
-       transform="translate(0,1.0583333)">
+       transform="matrix(2.4665059,0,0,2.4665059,-151.73313,-221.23353)">
       <path
          sodipodi:type="star"
          style="fill:#112887;fill-opacity:1;stroke:none;stroke-width:1.34091;stroke-opacity:1"
@@ -270,7 +271,7 @@
     <g
        id="g3"
        style="fill:#ce07a2;fill-opacity:1"
-       transform="translate(0,1.0583333)">
+       transform="matrix(2.4665059,0,0,2.4665059,-151.73313,-221.23353)">
       <path
          sodipodi:type="star"
          style="fill:#ce07a2;fill-opacity:1;stroke:none;stroke-width:1.34091;stroke-opacity:1"
@@ -300,7 +301,7 @@
     <g
        id="g1"
        style="fill:#3751c4;fill-opacity:1"
-       transform="translate(0,1.0583333)">
+       transform="matrix(2.4665059,0,0,2.4665059,-151.73313,-221.23353)">
       <path
          sodipodi:type="star"
          style="fill:#3751c4;fill-opacity:1;stroke:none;stroke-width:1.34091;stroke-opacity:1"
@@ -329,16 +330,16 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.7905px;line-height:0.25;font-family:'Apple SD Gothic Neo';-inkscape-font-specification:'Apple SD Gothic Neo';fill:#23465a;fill-opacity:1;stroke-width:1.04573;stroke-dasharray:none"
-       x="87.425713"
-       y="137.37631"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:31.5478px;line-height:0.25;font-family:'Apple SD Gothic Neo';-inkscape-font-specification:'Apple SD Gothic Neo';fill:#23465a;fill-opacity:1;stroke-width:2.5793;stroke-dasharray:none"
+       x="62.351654"
+       y="117.26088"
        id="text9"
-       transform="scale(0.98987998,1.0102235)"><tspan
+       transform="scale(0.98987997,1.0102235)"><tspan
          sodipodi:role="line"
          id="tspan9"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.25;font-family:'Apple SD Gothic Neo';-inkscape-font-specification:'Apple SD Gothic Neo';fill:#23465a;fill-opacity:1;stroke-width:1.04573;stroke-dasharray:none"
-         x="87.425713"
-         y="137.37631">ConNIS</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.25;font-family:'Apple SD Gothic Neo';-inkscape-font-specification:'Apple SD Gothic Neo';fill:#23465a;fill-opacity:1;stroke-width:2.5793;stroke-dasharray:none"
+         x="62.351654"
+         y="117.26088">ConNIS</tspan></text>
     <path
        sodipodi:type="star"
        style="fill:none;fill-opacity:1;stroke:#23465a;stroke-width:3.141;stroke-dasharray:none;stroke-opacity:1"
@@ -354,7 +355,7 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 100.71901,164.08987 -62.156369,35.886 -62.156371,-35.886 0,-71.771995 62.156371,-35.885998 62.156369,35.885998 z"
-       transform="matrix(0.53288694,0,0,0.53288694,84.58261,80.16748)"
+       transform="matrix(1.3143688,0,0,1.3143688,56.890373,-26.110354)"
        inkscape:export-filename="path9.pdf"
        inkscape:export-xdpi="116"
        inkscape:export-ydpi="116" />
