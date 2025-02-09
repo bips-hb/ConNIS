@@ -85,6 +85,8 @@ ConNIS <- function(ins.positions,
     )
     max_gap <- min(gene_i_length, max_gap)
 
+    # applying ConNIS for gaps <= 1000 can be speed up by reversing the problem
+
     if (max_gap > 1000) {
       probs <-
         prob_seq_misses(
