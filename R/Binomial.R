@@ -15,10 +15,10 @@
 #' @param weighting A weighting value for the genome-wide insertion density.
 #' @returns The p-values for each gene to observe its biggest gap.
 #' @examples
-#' set.seed(1234)
+#' set.seed(1)
 #' random_is <- sort(sample(1:10000, 2000))
 #' genes <- paste("gene_", 1:30)
-#' set.seed(5678)
+#' set.seed(2)
 #' x <- sort(sample(1:10000, 60))
 #' starts <- x[seq(1,60, 2)]
 #' stops <- x[seq(2,60, 2)]
@@ -50,8 +50,7 @@ Binomial <- function(ins.positions,
 
     num.ins.per.gene <- sapply(seq(gene.starts), function(start_i) {
       sum(ins.positions >= gene.starts[start_i] &
-            ins.positions <= gene.stops[start_i]) /
-        (gene.stops[start_i] - gene.starts[start_i] + 1)
+            ins.positions <= gene.stops[start_i])
     })
   } else {
     if (!length(unique(
@@ -99,7 +98,6 @@ Binomial <- function(ins.positions,
 
   results_per_gene <- do.call(rbind, results_per_gene)
   results_per_gene
-
 
 }
 
