@@ -1,6 +1,7 @@
 #' Calculate the probability for each gene for its biggest observed insertion free gap
 #'
 #' @importFrom Rdpack reprompt
+#' @import tidyverse
 #' @param ins.positions The observed unique insertion sites.
 #' @param gene.names The names of the genes.
 #' @param gene.starts Starting position within the genome of each gene.
