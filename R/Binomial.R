@@ -2,7 +2,8 @@
 #' based on the binomial distribution
 #'
 #' The method is an implementation of the Tn-seq analysis software (TSAS 2.0)
-#' package \insertRef{Burger2017}{ConNIS} (see https://github.com/srimam/TSAS).
+#' package by \insertCite{Burger2017;textual}{ConNIS}. See
+#' https://github.com/srimam/TSAS for further details.
 #'
 #' @importFrom stats dbinom
 #' @param ins.positions The observed unique insertion sites.
@@ -24,6 +25,8 @@
 #' genome_length <- 10000
 #' Binomial(ins.positions = random_is, gene.names = genes, gene.starts = starts,
 #' gene.stops = stops, genome.length = genome_length)
+#' @references
+#' \insertRef{Burger2017}{ConNIS}
 #' @export
 
 Binomial <- function(ins.positions,

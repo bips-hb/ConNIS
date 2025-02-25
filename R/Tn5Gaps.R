@@ -1,5 +1,8 @@
-#' TntGaps method by \insertRef{DeJesus2015}{ConNIS}
-#' (see https://github.com/srimam/TSAS).
+#' TntGaps method by \insertCite{DeJesus2015;textual}{ConNIS} based on the
+#' Gumbel distribution. See
+#' https://transit.readthedocs.io/en/v3.2.8/method_tn5gaps.html for further
+#' details and https://github.com/ioerger/transit for the original Pythion
+#' implementation.
 #'
 #' @param ins.positions The observed unique insertion sites.
 #' @param gene.names The names of the genes.
@@ -19,6 +22,8 @@
 #' genome_length <- 10000
 #' Tn5Gaps(ins.positions = random_is, gene.names = genes, gene.starts = starts,
 #' gene.stops = stops, genome.length = genome_length)
+#' @references
+#' \insertRef{DeJesus2015}{ConNIS}
 #' @export
 
 Tn5Gaps <- function(ins.positions,

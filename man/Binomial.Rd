@@ -35,7 +35,8 @@ The p-values for each gene to observe its biggest gap.
 }
 \description{
 The method is an implementation of the Tn-seq analysis software (TSAS 2.0)
-package \insertRef{Burger2017}{ConNIS} (see https://github.com/srimam/TSAS).
+package by \insertCite{Burger2017;textual}{ConNIS}. See
+https://github.com/srimam/TSAS for further details.
 }
 \examples{
 set.seed(1234)
@@ -48,4 +49,7 @@ stops <- x[seq(2,60, 2)]
 genome_length <- 10000
 Binomial(ins.positions = random_is, gene.names = genes, gene.starts = starts,
 gene.stops = stops, genome.length = genome_length)
+}
+\references{
+\insertRef{Burger2017}{ConNIS}
 }

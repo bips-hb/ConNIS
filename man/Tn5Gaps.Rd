@@ -2,8 +2,11 @@
 % Please edit documentation in R/Tn5Gaps.R
 \name{Tn5Gaps}
 \alias{Tn5Gaps}
-\title{TntGaps method by \insertRef{DeJesus2015}{ConNIS}
-(see https://github.com/srimam/TSAS).}
+\title{TntGaps method by \insertCite{DeJesus2015;textual}{ConNIS} based on the
+Gumbel distribution. See
+https://transit.readthedocs.io/en/v3.2.8/method_tn5gaps.html for further
+details and https://github.com/ioerger/transit for the original Pythion
+implementation.}
 \usage{
 Tn5Gaps(
   ins.positions,
@@ -31,8 +34,11 @@ Tn5Gaps(
 The p-values for each gene to observe its biggest gap.
 }
 \description{
-TntGaps method by \insertRef{DeJesus2015}{ConNIS}
-(see https://github.com/srimam/TSAS).
+TntGaps method by \insertCite{DeJesus2015;textual}{ConNIS} based on the
+Gumbel distribution. See
+https://transit.readthedocs.io/en/v3.2.8/method_tn5gaps.html for further
+details and https://github.com/ioerger/transit for the original Pythion
+implementation.
 }
 \examples{
 set.seed(1234)
@@ -45,4 +51,7 @@ stops <- x[seq(2,60, 2)]
 genome_length <- 10000
 Tn5Gaps(ins.positions = random_is, gene.names = genes, gene.starts = starts,
 gene.stops = stops, genome.length = genome_length)
+}
+\references{
+\insertRef{DeJesus2015}{ConNIS}
 }
