@@ -19,5 +19,4 @@ Function to calculate the number of possibles to observe sequences of misses
 }
 \examples{
 freq_seq_misses(23,8)
-
 }

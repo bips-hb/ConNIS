@@ -1,5 +1,6 @@
 #' Calculate the probability for each gene for its biggest observed insertion free gap
 #'
+#' @importFrom Rdpack reprompt
 #' @param ins.positions The observed unique insertion sites.
 #' @param gene.names The names of the genes.
 #' @param gene.starts Starting position within the genome of each gene.
@@ -9,13 +10,17 @@
 #' @param weighting A weighting value for the genome-wide insertion density.
 #' @returns The p-values for each gene to observe its biggest gap.
 #' @examples
+#' set.seed(1234)
 #' random_is <- sort(sample(1:10000, 2000))
 #' genes <- paste("gene_", 1:30)
+#' set.seed(5678)
 #' x <- sort(sample(1:10000, 60))
 #' starts <- x[seq(1,60, 2)]
 #' stops <- x[seq(2,60, 2)]
 #' genome_length <- 10000
-#' ConNIS(ins.positions = random_is, gene.names = genes, gene.starts = starts, gene.stops = stops, genome.length = genome_length)
+#' ConNIS(ins.positions = random_is, gene.names = genes, gene.starts = starts,
+#' gene.stops = stops, genome.length = genome_length)
+#' @export
 
 ConNIS <- function(ins.positions,
                    gene.names,

@@ -12,12 +12,12 @@ prob_seq_misses(n, k)
 \item{k}{Number total misses.}
 }
 \value{
-A vector of length k with probabilities to observe a sequence of misses of length 1, 2, ..., k.
+A vector of length k with probabilities to observe a sequence of
+misses of length 1, 2, ..., k.
 }
 \description{
 Function to calculate the probabilities to observe sequences of misses
 }
 \examples{
 prob_seq_misses(23,8)
-
 }

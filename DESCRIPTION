@@ -12,4 +12,6 @@ RoxygenNote: 7.3.2
 Depends:
     tidyverse (>= 2.0.0),
     gmp (>= 0.7-4)
+Imports: Rdpack
+RdMacros: Rdpack
 License: MIT + file LICENSE
