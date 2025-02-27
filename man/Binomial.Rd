@@ -16,7 +16,7 @@ Binomial(
 )
 }
 \arguments{
-\item{ins.positions}{The observed unique insertion sites.}
+\item{ins.positions}{Numeric vector of position of observed insertions sites.}
 
 \item{gene.names}{The names of the genes.}
 
@@ -39,10 +39,10 @@ package by \insertCite{Burger2017;textual}{ConNIS}. See
 https://github.com/srimam/TSAS for further details.
 }
 \examples{
-set.seed(1234)
+set.seed(1)
 random_is <- sort(sample(1:10000, 2000))
 genes <- paste("gene_", 1:30)
-set.seed(5678)
+set.seed(2)
 x <- sort(sample(1:10000, 60))
 starts <- x[seq(1,60, 2)]
 stops <- x[seq(2,60, 2)]

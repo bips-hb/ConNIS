@@ -1,12 +1,10 @@
-#' Calculate the probability for each gene to contain a number of observed IS
-#' based on the binomial distribution
+#' Calculate the probability for each gene to contain a sequence of non-
+#' insertion sites based on the geometric distribution.
 #'
-#' The method is an implementation of the Tn-seq analysis software (TSAS 2.0)
-#' package by \insertCite{Burger2017;textual}{ConNIS}. See
-#' https://github.com/srimam/TSAS for further details.
+#' The geometric distribution is the distribution in limit of the probability
+#' distribution of ConNIS
 #'
-#' @importFrom stats dbinom
-#'
+#' @importFrom stats pgeom
 #' @param ins.positions Numeric vector of position of observed insertions sites.
 #' @param gene.names The names of the genes.
 #' @param gene.starts Starting position within the genome of each gene.
@@ -24,19 +22,19 @@
 #' starts <- x[seq(1,60, 2)]
 #' stops <- x[seq(2,60, 2)]
 #' genome_length <- 10000
-#' Binomial(ins.positions = random_is, gene.names = genes, gene.starts = starts,
+#' Geometric(ins.positions = random_is, gene.names = genes, gene.starts = starts,
 #' gene.stops = stops, genome.length = genome_length)
 #' @references
 #' \insertRef{Burger2017}{ConNIS}
 #' @export
 
-Binomial <- function(ins.positions,
-                     gene.names,
-                     gene.starts,
-                     gene.stops,
-                     num.ins.per.gene=NULL,
-                     genome.length,
-                     weighting=1){
+Geometric <- function(ins.positions,
+                      gene.names,
+                      gene.starts,
+                      gene.stops,
+                      num.ins.per.gene=NULL,
+                      genome.length,
+                      weighting=1){
 
   if (is.null(num.ins.per.gene)) {
     if (!length(unique(
@@ -80,25 +78,32 @@ Binomial <- function(ins.positions,
       gene.stops[i]
 
     gene_i_length <- gene_i_stop - gene_i_start + 1
+
+    expected_num_IS_gene_i <-
+      floor(gene_i_length * observed_genome_insertion_densitiy)
+
     gene_i_num_ins <- num.ins.per.gene[i]
 
-    p_value <- sum(dbinom(0:gene_i_num_ins,
-                          gene_i_length,
-                          observed_genome_insertion_densitiy * weighting))
+    max_gap <- max(
+      diff(
+        unique(
+          c(
+            gene_i_start-1,
+            ins_sites[ins_sites >= gene_i_start & ins_sites <= gene_i_stop],
+            gene_i_stop+1
+          )
+        )
+      )
+    )
+    max_gap <- min(gene_i_length, max_gap)
 
-    if(is.na(p_value)){
-      p_value <- 1
-    }
+    p_value <- 1 - pgeom(max_gap, observed_genome_insertion_densitiy * weighting)
 
     tibble(gene = gene.names[i],
            p_value = p_value,
            weight_value = weighting)
-
-
   })
 
   results_per_gene <- do.call(rbind, results_per_gene)
   results_per_gene
-
 }
-

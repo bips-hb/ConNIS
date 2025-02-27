@@ -10,7 +10,8 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Depends:
-    tidyverse (>= 2.0.0),
+    tibble (>= 3.2.1),
+    parallel (>= 4.3.2),
     gmp (>= 0.7-4)
 Imports: Rdpack
 RdMacros: Rdpack

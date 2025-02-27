@@ -2,7 +2,7 @@
 #'
 #' @importFrom Rdpack reprompt
 #' @importFrom tibble tibble
-#' @param ins.positions The observed unique insertion sites.
+#' @param ins.positions Numeric vector of position of observed insertions sites.
 #' @param gene.names The names of the genes.
 #' @param gene.starts Starting position within the genome of each gene.
 #' @param gene.stops Ending position within the genome of each gene.
@@ -144,7 +144,7 @@ ConNIS <- function(ins.positions,
     tibble(
       gene = gene.names[i],
       p_value = p_value,
-      weighting = weighting
+      weight_value = weighting
     )
   })
 
