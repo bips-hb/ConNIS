@@ -2,7 +2,7 @@
 % Please edit documentation in R/subsampleResults.R
 \name{subsampleResults}
 \alias{subsampleResults}
-\title{Function to draw subsamples of observerd IS and calculate p values}
+\title{Results based on subsamples}
 \usage{
 subsampleResults(
   method = c("Binomial", "ConNIS", "Geometric", "Tn5Gaps"),
@@ -24,7 +24,8 @@ subsampleResults(
 )
 }
 \arguments{
-\item{method}{Method that will be applied to subsamples.}
+\item{method}{Method that will be applied to subsamples. Available are
+\code{"Binomial"}, \code{"ConNIS"}, \code{"Geometric"} and \code{"Tn5Gaps"}.}
 
 \item{ins.positions}{Numeric vector of position of observed insertions sites.}
 
@@ -41,45 +42,57 @@ subsampleResults(
 \item{weightings}{A sequence of weight values that are applied to the
 selected method.}
 
-\item{m}{Number of sub samples}
+\item{m}{Number of sub samples.}
 
 \item{d}{Proportion of the original IS used as sub samples.}
 
 \item{use.parallel}{Should the calcutltions be done in parallel?}
 
-\item{parallelization.type}{Which method should be used for parallel
-calculation. Available are \emph{mclapply} and \emph{parLapply}}
+\item{parallelization.type}{Which method should be used for the
+parallelization? Available are \code{"mclapply"} and \code{"parLapply"} of the
+\code{"parallel"} package.}
 
 \item{numCores}{Number of cores to juse for parallel calculation. Should not
 exit the number of available (logical) cores of the system.}
 
-\item{cluster.type}{If \emph{parLapply} is used as parallelization.type, a cluster
-type like \emph{PSOCK} needs tp be specified. Check your system which cluster
-types are supported and see ?makeCluster of the parallel package.}
+\item{cluster.type}{If \code{"parLapply"} is used as parallelization.type, a
+cluster type like \code{"PSOCK"} needs tp be specified. Check which types are
+supported on your system. See als \code{?makeCluster} of the \code{parallel} package.}
 
-\item{seed}{Seed for subsampling. If NULL no seed is set and results might
+\item{seed}{Seed for subsampling. If \code{NULL} no seed is set and results might
 not be reproducable.}
 
 \item{rng}{Which random number generator (RNG) should be used. If NULL, the
-default RNG of the system is used. NOTE: for parallelisation "L'Ecuyer-CMRG"
-should be used}
+default RNG of the system is used. NOTE: for parallelisation.
+\code{"L'Ecuyer-CMRG"} should be used. For details see the manual of the
+\code{parallel} package.}
 }
 \value{
-A list of tibbles. Each tibble is based on one subsample and
+A list of \code{tibble}s. Each \code{tibble} is based on one subsample and
 contains the results of each genes of each tuning/weight value.
 }
 \description{
-Function to draw subsamples of observerd IS and calculate p values
+'subsampleResults' draws \emph{m} subsamples of the observerd IS and calculates
+for each subsample the results for a user selected analysis method. Will be
+used by \code{instabilities}.
 }
 \examples{
+# generate random insertion sites
 set.seed(1)
 random_is <- sort(sample(1:10000, 2000))
+
+# generate dummy gene names
 genes <- paste("gene_", 1:30)
+
+# generate radom start points and stop points of the dummy genes
 set.seed(2)
 x <- sort(sample(1:10000, 60))
 starts <- x[seq(1,60, 2)]
 stops <- x[seq(2,60, 2)]
+
 genome_length <- 10000
+
+# run supsumple procedure with ConNIS
 subsampleResults(method="ConNIS",
                   ins.positions = random_is,
                   gene.names = genes,
@@ -91,4 +104,5 @@ subsampleResults(method="ConNIS",
                   d = 0.5,
                   use.parallel = FALSE,
                   seed = 1)
+
 }

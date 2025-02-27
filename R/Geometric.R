@@ -1,10 +1,13 @@
-#' Calculate the probability for each gene to contain a sequence of non-
+#' The Geometric analysis method
+#'
+#' Calculates the probability for each gene to contain a sequence of non-
 #' insertion sites based on the geometric distribution.
 #'
 #' The geometric distribution is the distribution in limit of the probability
 #' distribution of ConNIS
 #'
 #' @importFrom stats pgeom
+#'
 #' @param ins.positions Numeric vector of position of observed insertions sites.
 #' @param gene.names The names of the genes.
 #' @param gene.starts Starting position within the genome of each gene.
@@ -12,20 +15,31 @@
 #' @param num.ins.per.gene Number of unique insertion sites within each gene.
 #' @param genome.length Length of the genome.
 #' @param weighting A weighting value for the genome-wide insertion density.
+#'
 #' @returns The p-values for each gene to observe its biggest gap.
+#'
 #' @examples
+#' # generate random insertion sites
 #' set.seed(1)
 #' random_is <- sort(sample(1:10000, 2000))
+#'
+#' # generate dummy gene names
 #' genes <- paste("gene_", 1:30)
+#'
+#' # generate radom start points and stop points of the dummy genes
 #' set.seed(2)
 #' x <- sort(sample(1:10000, 60))
 #' starts <- x[seq(1,60, 2)]
 #' stops <- x[seq(2,60, 2)]
+#'
 #' genome_length <- 10000
+#'
 #' Geometric(ins.positions = random_is, gene.names = genes, gene.starts = starts,
 #' gene.stops = stops, genome.length = genome_length)
+#'
 #' @references
 #' \insertRef{Burger2017}{ConNIS}
+#'
 #' @export
 
 Geometric <- function(ins.positions,

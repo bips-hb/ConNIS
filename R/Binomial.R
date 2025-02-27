@@ -1,5 +1,7 @@
-#' Calculate the probability for each gene to contain a number of observed IS
-#' based on the binomial distribution
+#' The Binomial analysis method based on TSAS 2.0
+#'
+#' Calculates the probability for each gene to contain a number of observed IS
+#' based on the binomial distribution.
 #'
 #' The method is an implementation of the Tn-seq analysis software (TSAS 2.0)
 #' package by \insertCite{Burger2017;textual}{ConNIS}. See
@@ -14,20 +16,31 @@
 #' @param num.ins.per.gene Number of unique insertion sites within each gene.
 #' @param genome.length Length of the genome.
 #' @param weighting A weighting value for the genome-wide insertion density.
+#'
 #' @returns The p-values for each gene to observe its biggest gap.
+#'
 #' @examples
+#' # generate random insertion sites
 #' set.seed(1)
 #' random_is <- sort(sample(1:10000, 2000))
+#'
+#' # generate dummy gene names
 #' genes <- paste("gene_", 1:30)
+#'
+#' # generate radom start points and stop points of the dummy genes
 #' set.seed(2)
 #' x <- sort(sample(1:10000, 60))
 #' starts <- x[seq(1,60, 2)]
 #' stops <- x[seq(2,60, 2)]
+#'
 #' genome_length <- 10000
+#'
 #' Binomial(ins.positions = random_is, gene.names = genes, gene.starts = starts,
 #' gene.stops = stops, genome.length = genome_length)
+#'
 #' @references
 #' \insertRef{Burger2017}{ConNIS}
+#'
 #' @export
 
 Binomial <- function(ins.positions,

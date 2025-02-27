@@ -2,11 +2,7 @@
 % Please edit documentation in R/Tn5Gaps.R
 \name{Tn5Gaps}
 \alias{Tn5Gaps}
-\title{TntGaps method by \insertCite{DeJesus2015;textual}{ConNIS} based on the
-Gumbel distribution. See
-https://transit.readthedocs.io/en/v3.2.8/method_tn5gaps.html for further
-details and https://github.com/ioerger/transit for the original Pythion
-implementation.}
+\title{The Tn5Gaps analysis method of TRANSIT}
 \usage{
 Tn5Gaps(
   ins.positions,
@@ -41,16 +37,24 @@ details and https://github.com/ioerger/transit for the original Pythion
 implementation.
 }
 \examples{
-set.seed(1234)
+# generate random insertion sites
+set.seed(1)
 random_is <- sort(sample(1:10000, 2000))
+
+# generate dummy gene names
 genes <- paste("gene_", 1:30)
-set.seed(5678)
+
+# generate radom start points and stop points of the dummy genes
+set.seed(2)
 x <- sort(sample(1:10000, 60))
 starts <- x[seq(1,60, 2)]
 stops <- x[seq(2,60, 2)]
+
 genome_length <- 10000
+
 Tn5Gaps(ins.positions = random_is, gene.names = genes, gene.starts = starts,
 gene.stops = stops, genome.length = genome_length)
+
 }
 \references{
 \insertRef{DeJesus2015}{ConNIS}

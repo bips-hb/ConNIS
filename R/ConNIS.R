@@ -1,7 +1,15 @@
-#' Calculate the probability for each gene for its biggest observed insertion free gap
+#' The ConNIS analysis method
+#'
+#' Calculates the probability for each gene of its biggest observed insertion
+#' free gap. For a gene \eqn{j} ConNIS is definied as
+#' \deqn{1-\sum_{i=1}^{l_j-1} \frac{\binom{b_j-i-1}{b_j - \hat{h}_j w-i}}{\binom{b_j-1}{b_j - \hat{h}_j w -1}}}
+#' with estimated \eqn{l_j} being the longest observed insertion free sequence
+#' of gene \eqn{j} and \eqn{ \hat{h}_j} the estimated number of insertions under
+#' the assumption of non-essentiality and \eqn{w} the weight value.
 #'
 #' @importFrom Rdpack reprompt
 #' @importFrom tibble tibble
+#'
 #' @param ins.positions Numeric vector of position of observed insertions sites.
 #' @param gene.names The names of the genes.
 #' @param gene.starts Starting position within the genome of each gene.
@@ -9,18 +17,28 @@
 #' @param num.ins.per.gene Number of unique insertion sites within each gene.
 #' @param genome.length Length of the genome.
 #' @param weighting A weighting value for the genome-wide insertion density.
+#'
 #' @returns The p-values for each gene to observe its biggest gap.
+#'
 #' @examples
+#' # generate random insertion sites
 #' set.seed(1)
 #' random_is <- sort(sample(1:10000, 2000))
+#'
+#' # generate dummy gene names
 #' genes <- paste("gene_", 1:30)
+#'
+#' # generate radom start points and stop points of the dummy genes
 #' set.seed(2)
 #' x <- sort(sample(1:10000, 60))
 #' starts <- x[seq(1,60, 2)]
 #' stops <- x[seq(2,60, 2)]
+#'
 #' genome_length <- 10000
+#'
 #' ConNIS(ins.positions = random_is, gene.names = genes, gene.starts = starts,
 #' gene.stops = stops, genome.length = genome_length)
+#'
 #' @export
 
 ConNIS <- function(ins.positions,

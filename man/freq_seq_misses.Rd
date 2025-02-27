@@ -2,7 +2,7 @@
 % Please edit documentation in R/freq_seq_misses.R
 \name{freq_seq_misses}
 \alias{freq_seq_misses}
-\title{Function to calculate the number of possibles to observe sequences of misses}
+\title{Number of possible sequences of empty urns}
 \usage{
 freq_seq_misses(n, k)
 }
@@ -15,8 +15,14 @@ freq_seq_misses(n, k)
 A list of length k with number of possibilities to observe a sequence of misses of length 1, 2, ..., k.
 }
 \description{
-Function to calculate the number of possibles to observe sequences of misses
+\code{freq_seq_misses} calculates the number of possibles to observe \emph{s} adjacent
+empty urns if \emph{n} urns are placed in a row of which \emph{k} urns are randomly
+filled:
+\deqn{
+(n-s-1)\binom{n-s-2}{k-s}.
+}
 }
 \examples{
 freq_seq_misses(23,8)
+
 }

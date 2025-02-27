@@ -2,8 +2,7 @@
 % Please edit documentation in R/Geometric.R
 \name{Geometric}
 \alias{Geometric}
-\title{Calculate the probability for each gene to contain a sequence of non-
-insertion sites based on the geometric distribution.}
+\title{The Geometric analysis method}
 \usage{
 Geometric(
   ins.positions,
@@ -34,20 +33,32 @@ Geometric(
 The p-values for each gene to observe its biggest gap.
 }
 \description{
+Calculates the probability for each gene to contain a sequence of non-
+insertion sites based on the geometric distribution.
+}
+\details{
 The geometric distribution is the distribution in limit of the probability
 distribution of ConNIS
 }
 \examples{
+# generate random insertion sites
 set.seed(1)
 random_is <- sort(sample(1:10000, 2000))
+
+# generate dummy gene names
 genes <- paste("gene_", 1:30)
+
+# generate radom start points and stop points of the dummy genes
 set.seed(2)
 x <- sort(sample(1:10000, 60))
 starts <- x[seq(1,60, 2)]
 stops <- x[seq(2,60, 2)]
+
 genome_length <- 10000
+
 Geometric(ins.positions = random_is, gene.names = genes, gene.starts = starts,
 gene.stops = stops, genome.length = genome_length)
+
 }
 \references{
 \insertRef{Burger2017}{ConNIS}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/prob_seq_misses.R
 \name{prob_seq_misses}
 \alias{prob_seq_misses}
-\title{Function to calculate the probabilities to observe sequences of misses}
+\title{Number of possible sequences of empty urns}
 \usage{
 prob_seq_misses(n, k)
 }
@@ -12,12 +12,17 @@ prob_seq_misses(n, k)
 \item{k}{Number total misses.}
 }
 \value{
-A vector of length k with probabilities to observe a sequence of
-misses of length 1, 2, ..., k.
+A list of length k with number of possibilities to observe a sequence of misses of length 1, 2, ..., k.
 }
 \description{
-Function to calculate the probabilities to observe sequences of misses
+\code{prob_seq_misses} calculates the probability to observe \emph{s} adjacent empty
+urns if \emph{n} urns are placed in a row of which \emph{k} urns are randomly
+filled:
+\deqn{
+\frac{\binom{n-s-2}{k-s}}{\binom{n-1}{k-1}}.
+}
 }
 \examples{
 prob_seq_misses(23,8)
+
 }

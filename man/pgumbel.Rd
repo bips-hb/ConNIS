@@ -7,7 +7,7 @@
 pgumbel(k, mu, s)
 }
 \arguments{
-\item{k}{Realsiation of the support.}
+\item{k}{Realisation of the support.}
 
 \item{mu}{The location parameter.}
 
@@ -18,6 +18,7 @@ The p-values for each gene to observe its biggest gap.
 }
 \description{
 Cumulative distribution function of the Gumbel distribution
+\deqn{\exp^{-\exp^\frac{\mu - k}{s}}.}
 }
 \examples{
 pgumbel(10,5,3)
