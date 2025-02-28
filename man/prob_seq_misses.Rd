@@ -2,24 +2,31 @@
 % Please edit documentation in R/prob_seq_misses.R
 \name{prob_seq_misses}
 \alias{prob_seq_misses}
-\title{Number of possible sequences of empty urns}
+\title{Probabilities of observing a sequence of empty urns of a given length}
 \usage{
-prob_seq_misses(n, k)
+prob_seq_misses(n, k, s = NULL)
 }
 \arguments{
-\item{n}{Length of sequence.}
+\item{n}{Number of urns.}
 
-\item{k}{Number total misses.}
+\item{k}{Number empty urns.}
+
+\item{s}{Optional. Calculate probabilities only for a give sequence of length
+\code{s} of empty urns. Must not be larger than \code{k} or smaller than \code{1}. If \code{NULL}
+all probabilities of lengths \eqn{s=1,2, \dots, k} are calculated.}
 }
 \value{
-A list of length k with number of possibilities to observe a sequence of misses of length 1, 2, ..., k.
+A vector of length 'k' with number of possibilities to observe a
+sequence of empty urns. First list element gives the probability for
+\eqn{s=1}, second list element for \eqn{2} and so on. If \code{s} is not NULL only
+the corresponding probability is returned.
 }
 \description{
-\code{prob_seq_misses} calculates the probability to observe \emph{s} adjacent empty
-urns if \emph{n} urns are placed in a row of which \emph{k} urns are randomly
-filled:
+\code{prob_seq_misses} calculates the probabilities to observe
+\eqn{s = 1, \dots, k} adjacent empty urns if \eqn{n} urns are placed in a row
+of which \eqn{k} urns are empty and randomly placed:
 \deqn{
-\frac{\binom{n-s-2}{k-s}}{\binom{n-1}{k-1}}.
+\frac{\binom{n-s-2}{k-s}}{\binom{n-1}{k-1}}
 }
 }
 \examples{

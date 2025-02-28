@@ -5,7 +5,7 @@
 \title{Results based on subsamples}
 \usage{
 subsampleResults(
-  method = c("Binomial", "ConNIS", "Geometric", "Tn5Gaps"),
+  method = "ConNIS",
   ins.positions,
   gene.names,
   gene.starts,
@@ -15,12 +15,13 @@ subsampleResults(
   weightings = 1,
   m = 100,
   d = 0.5,
-  use.parallel = FALSE,
-  parallelization.type = c("mclapply", "parLapply"),
+  use.parallelization = FALSE,
+  parallelization.type = "mclapply",
   numCores = 3,
   cluster.type = NULL,
   seed = NULL,
-  rng = NULL
+  set.rng = NULL,
+  keep.new.RNG = FALSE
 )
 }
 \arguments{
@@ -46,7 +47,7 @@ selected method.}
 
 \item{d}{Proportion of the original IS used as sub samples.}
 
-\item{use.parallel}{Should the calcutltions be done in parallel?}
+\item{use.parallelization}{Should the calcutltions be done in parallel?}
 
 \item{parallelization.type}{Which method should be used for the
 parallelization? Available are \code{"mclapply"} and \code{"parLapply"} of the
@@ -62,19 +63,22 @@ supported on your system. See als \code{?makeCluster} of the \code{parallel} pac
 \item{seed}{Seed for subsampling. If \code{NULL} no seed is set and results might
 not be reproducable.}
 
-\item{rng}{Which random number generator (RNG) should be used. If NULL, the
-default RNG of the system is used. NOTE: for parallelisation.
-\code{"L'Ecuyer-CMRG"} should be used. For details see the manual of the
-\code{parallel} package.}
+\item{set.rng}{Which random number generator (RNG) should be used. If NULL, the
+default RNG of the system is used. NOTE: if use.parallelizationization is \code{TRUE} the
+\code{"L'Ecuyer-CMRG"} value for RNG should be used. For details see the manual of
+the \code{parallel} package.}
+
+\item{keep.new.RNG}{If the RNG is changed, should it kept for the rest of the
+session? Default is \code{FALSE} (recommended).}
 }
 \value{
 A list of \code{tibble}s. Each \code{tibble} is based on one subsample and
 contains the results of each genes of each tuning/weight value.
 }
 \description{
-'subsampleResults' draws \emph{m} subsamples of the observerd IS and calculates
-for each subsample the results for a user selected analysis method. Will be
-used by \code{instabilities}.
+'subsampleResults' draws \eqn{m} subsamples of the observerd IS and
+calculates for each subsample the results for a user selected analysis
+method.
 }
 \examples{
 # generate random insertion sites
@@ -92,7 +96,7 @@ stops <- x[seq(2,60, 2)]
 
 genome_length <- 10000
 
-# run supsumple procedure with ConNIS
+# run subsumple procedure with ConNIS (sequential)
 subsampleResults(method="ConNIS",
                   ins.positions = random_is,
                   gene.names = genes,
@@ -102,7 +106,24 @@ subsampleResults(method="ConNIS",
                   weightings = c(0.3, 0.6),
                   m = 2,
                   d = 0.5,
-                  use.parallel = FALSE,
+                  use.parallelization = FALSE,
                   seed = 1)
+
+# Example with parallelization (mclapply)
+\dontrun{
+subsampleResults(method="ConNIS",
+                  ins.positions = random_is,
+                  gene.names = genes,
+                  gene.starts = starts,
+                  gene.stops = stops,
+                  genome.length = genome_length,
+                  weightings = c(0.3, 0.6),
+                  m = 2,
+                  d = 0.5,
+                  use.parallelization = T,
+                  parallelization.type="mclapply",
+                  numCores=detectCores(),
+                  seed = 1)
+}
 
 }

@@ -1,10 +1,12 @@
 #' The Geometric analysis method
 #'
 #' Calculates the probability for each gene to contain a sequence of non-
-#' insertion sites based on the geometric distribution.
-#'
-#' The geometric distribution is the distribution in limit of the probability
-#' distribution of ConNIS
+#' insertion sites based on the geometric distribution
+#' \deqn{ (1- \theta \cdot w) ^{l_j} (\theta \cdot w) .}
+#' \eqn{l_j} is the length of the longest insertion-free sequence of gene
+#' \eqn{j}. \eqn{\theta} is the genome-wide insertion density which can be
+#' weighted by \eqn{0 < w \leq 1} to account for regions with low insertion
+#' densities.
 #'
 #' @importFrom stats pgeom
 #'

@@ -1,11 +1,14 @@
 #' The Binomial analysis method based on TSAS 2.0
 #'
-#' Calculates the probability for each gene to contain a number of observed IS
-#' based on the binomial distribution.
-#'
-#' The method is an implementation of the Tn-seq analysis software (TSAS 2.0)
-#' package by \insertCite{Burger2017;textual}{ConNIS}. See
-#' https://github.com/srimam/TSAS for further details.
+#' Calculates the probability for each gene to contain the number of observed IS
+#' under the assumption of non-essentiality. It is based on the binomial
+#' distribution
+#' \deqn{\binom{b_j}{h_j} (\theta \cdot w) ^{h_j} (1- \theta \cdot w)^{b_j-h_j}.}
+#' \eqn{b_j} is the length of gene \eqn{j} and \eqn{h_j} the number of its
+#' insertion sites. \eqn{\theta} is the genome-wide insertion density which
+#' can be weighted by \eqn{0 < w \leq 1} to account for regions with low
+#' insertion densities. For \eqn{w=1} the approach is the original method of
+#' \insertCite{Burger2017;textual}{ConNIS}.
 #'
 #' @importFrom stats dbinom
 #'

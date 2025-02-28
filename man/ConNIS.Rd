@@ -34,11 +34,14 @@ The p-values for each gene to observe its biggest gap.
 }
 \description{
 Calculates the probability for each gene of its biggest observed insertion
-free gap. For a gene \eqn{j} ConNIS is definied as
+free gap. For a gene \eqn{j} ConNIS is defined as
 \deqn{1-\sum_{i=1}^{l_j-1} \frac{\binom{b_j-i-1}{b_j - \hat{h}_j w-i}}{\binom{b_j-1}{b_j - \hat{h}_j w -1}}}
-with estimated \eqn{l_j} being the longest observed insertion free sequence
-of gene \eqn{j} and \eqn{ \hat{h}_j} the estimated number of insertions under
-the assumption of non-essentiality and \eqn{w} the weight value.
+with \eqn{b_j} being the length of gene \eqn{j} and \eqn{l_j} being its
+longest sequences without insertion sites. \eqn{ \hat{h}_j = b_j \cdot \theta}
+are the estimated number of insertions under the assumption of
+non-essentiality based on the genome-wide insertion densitiy \eqn{\theta}.
+\eqn{w} we is a weight value to adjust for regions with an insertion density
+below \eqn{\theta}.
 }
 \examples{
 # generate random insertion sites

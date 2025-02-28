@@ -1,10 +1,14 @@
 #' The Tn5Gaps analysis method of TRANSIT
 #'
-#' TntGaps method by \insertCite{DeJesus2015;textual}{ConNIS} based on the
-#' Gumbel distribution. See
-#' https://transit.readthedocs.io/en/v3.2.8/method_tn5gaps.html for further
-#' details and https://github.com/ioerger/transit for the original Pythion
+#' Implementation of the TntGaps method by
+#' \insertCite{DeJesus2015;textual}{ConNIS} which uses the Gumbel distribution.
+#' See https://transit.readthedocs.io/en/v3.2.8/method_tn5gaps.html for further
+#' details and https://github.com/ioerger/transit for the original Python
 #' implementation.
+#' Here, the method is extended by allowing to set a weight value
+#' \eqn{0 < w \leq 1} to account for genomic regions with an insertion density
+#' below the genome-wide average.
+#'
 #'
 #' @param ins.positions Numeric vector of position of observed insertions sites.
 #' @param gene.names The names of the genes.

@@ -2,25 +2,35 @@
 % Please edit documentation in R/freq_seq_misses.R
 \name{freq_seq_misses}
 \alias{freq_seq_misses}
-\title{Number of possible sequences of empty urns}
+\title{Number of possibilities of observing a sequence of empty urns of a given
+length}
 \usage{
-freq_seq_misses(n, k)
+freq_seq_misses(n, k, s = NULL)
 }
 \arguments{
-\item{n}{Length of sequence.}
+\item{n}{Number of urns.}
 
-\item{k}{Number total misses.}
+\item{k}{Number of empty urns.}
+
+\item{s}{Optional. Calculate possibilities only for a give sequence of length
+\code{s} of empty urns. Must not be larger than \code{k} or smaller than \code{1}. If \code{NULL}
+all probabilities of lengths \eqn{s=1,2, \dots, k} are calculated.}
 }
 \value{
-A list of length k with number of possibilities to observe a sequence of misses of length 1, 2, ..., k.
+A list of length \code{k} with number of possibilities to observe a
+sequence of misses of length \eqn{s=1, 2, ..., k}. First list element gives
+the number of possibilities for \eqn{s=1}, second list element for \eqn{2}
+and so on. Possibilities are of type \code{bigz} of the \code{gmp} package. See \code{?bigz}
+for further details.
 }
 \description{
-\code{freq_seq_misses} calculates the number of possibles to observe \emph{s} adjacent
-empty urns if \emph{n} urns are placed in a row of which \emph{k} urns are randomly
-filled:
+\code{freq_seq_misses} calculates the number of all possibles to observe
+\eqn{s = 1, \dots, k} adjacent empty urns if \eqn{n} urns are placed in a row
+of which \eqn{k} urns are empty and randomly placed:
 \deqn{
-(n-s-1)\binom{n-s-2}{k-s}.
+(n-s-1)\binom{n-s-2}{k-s}
 }
+The function uses the \code{chooseZ} function of the \code{gmp} package.
 }
 \examples{
 freq_seq_misses(23,8)
