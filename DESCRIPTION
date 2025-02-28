@@ -16,3 +16,7 @@ Depends:
 Imports: Rdpack
 RdMacros: Rdpack
 License: MIT + file LICENSE
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
