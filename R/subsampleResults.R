@@ -68,7 +68,8 @@
 #'                   use.parallelization = FALSE,
 #'                   seed = 1)
 #'
-#' # Example with parallelization (mclapply())
+#' # Example with parallelization (mclapply()); use detectCores()-1 to set
+#' workers
 #' \dontrun{
 #' subsampleResults(method="ConNIS",
 #'                   ins.positions = random_is,
@@ -81,7 +82,7 @@
 #'                   d = 0.5,
 #'                   use.parallelization = T,
 #'                   parallelization.type="mclapply",
-#'                   numCores=detectCores(),
+#'                   numCores=max(1,detectCores()-1),
 #'                   seed = 1)
 #' }
 #'
