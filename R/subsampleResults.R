@@ -107,6 +107,7 @@ subsampleResults <- function(method="ConNIS",
                              keep.new.RNG=FALSE){
 
   current_RNG <-RNGkind()[1]
+  proceed <- 1
 
   # catch errors:
   if(d<=0 | d >= 1 | length(d)!=1){
@@ -114,87 +115,106 @@ subsampleResults <- function(method="ConNIS",
   }
 
   if(use.parallelization == TRUE & parallelization.type == "parLapply" & is.null(cluster.type)){
-    stop("Need to set a valide cluster type for using parLapply")
+    stop("Need to set a valide cluster type for using parLapply.")
   }
 
   # print warnings if RNG or seed is not set appropriately
   if(is.null(seed)){
-    warning("No seed set, results might not be reproducable.")
+    proceed <- menu(c("Yes", "No"),
+                    title = "No seed set, results might not be reproducable. Do you want to proceed?")
   }
 
   if(is.null(set.rng) & use.parallelization == FALSE){
-    warning("No RNG set, will use the current one of this session: ", current_RNG)
+    warning("No RNG but a seed was set. Used current RNG this session: ", current_RNG)
   }
 
   if(is.null(set.rng)){
     if(use.parallelization == TRUE & parallelization.type == "mclapply"){
-      warning("Subsampling with mclapply but RNG is not set to >>L'Ecuyer-CMRG<<: results might not be reproducable.")
+      proceed <- menu(c("Yes", "No"),
+                      title = "Selected 'mclapply' for subsampling but RNG has not been set to >>L'Ecuyer-CMRG<<: results might not be reproducable. Do you want to proceed?")
     }
   }
 
   if(!is.null(set.rng)){
     if(set.rng != "L'Ecuyer-CMRG" & use.parallelization == TRUE & parallelization.type == "mclapply"){
-      warning("Subsampling with mclapply but RNG is not set to >>L'Ecuyer-CMRG<<: results might not be reproducable.")
+      proceed <- menu(c("Yes", "No"),
+                      title = "Selected 'mclapply' for subsampling but RNG has not been set to >>L'Ecuyer-CMRG<<: results might not be reproducable. Do you want to proceed?")
     }
   }
 
+  if(proceed==1){
 
-  if(use.parallelization==TRUE){
+    if(use.parallelization==TRUE){
 
-    if(numCores >= detectCores()){
-      warning("You use at least as manes cores as there are (logical) cores available. Might slow down calculations.")
-    }
-
-
-    if(parallelization.type == "parLapply"){
-
-      # make sure that the cluster is closed in any case
-      on.exit(stopCluster(cl))
-
-      # make cluster
-      cl <- makeCluster(type = cluster.type, numCores)
-
-      # set seed for RNG
-      clusterSetRNGStream(cl = cl, iseed = seed)
-
-      clusterExport(cl = cl,
-                    envir = environment(),
-                    varlist = list(
-                      "method",
-                      "ins.positions",
-                      "gene.names",
-                      "gene.starts",
-                      "gene.stops",
-                      "num.ins.per.gene",
-                      "genome.length",
-                      "weights",
-                      "m",
-                      "d",
-                      "prob_seq_misses",
-                      "freq_seq_misses",
-                      "pgumbel",
-                      "Binomial",
-                      "ConNIS",
-                      "Geometric",
-                      "Tn5Gaps"
-                    ))
-
-      clusterEvalQ(cl, {
-        library(tibble)
-        library(gmp)}
-      )
-
-      subsample_results <- parLapply(cl = cl, X = 1:m, fun =  function(i){
-
-        # draw subsamples of IS
-        ins_positions_subsample <-
-          sort(sample(ins.positions, size=length(ins.positions)*d, replace = F))
+      if(numCores >= detectCores()){
+        warning("You use at least as manes cores as there are (logical) cores available. Might slow down calculations.")
+      }
 
 
-        if(method == "Binomial"){
+      if(parallelization.type == "parLapply"){
 
-          results_tunings <- lapply(weights, function(w){
-            result_w <- Binomial(ins.positions = ins_positions_subsample,
+        # make sure that the cluster is closed in any case
+        on.exit(stopCluster(cl))
+
+        # make cluster
+        cl <- makeCluster(type = cluster.type, numCores)
+
+        # set seed for RNG
+        clusterSetRNGStream(cl = cl, iseed = seed)
+
+        clusterExport(cl = cl,
+                      envir = environment(),
+                      varlist = list(
+                        "method",
+                        "ins.positions",
+                        "gene.names",
+                        "gene.starts",
+                        "gene.stops",
+                        "num.ins.per.gene",
+                        "genome.length",
+                        "weights",
+                        "m",
+                        "d",
+                        "prob_seq_misses",
+                        "freq_seq_misses",
+                        "pgumbel",
+                        "Binomial",
+                        "ConNIS",
+                        "Geometric",
+                        "Tn5Gaps"
+                      ))
+
+        clusterEvalQ(cl, {
+          library(tibble)
+          library(gmp)}
+        )
+
+        subsample_results <- parLapply(cl = cl, X = 1:m, fun =  function(i){
+
+          # draw subsamples of IS
+          ins_positions_subsample <-
+            sort(sample(ins.positions, size=length(ins.positions)*d, replace = F))
+
+
+          if(method == "Binomial"){
+
+            results_tunings <- lapply(weights, function(w){
+              result_w <- Binomial(ins.positions = ins_positions_subsample,
+                                   gene.names,
+                                   gene.starts,
+                                   gene.stops,
+                                   num.ins.per.gene,
+                                   genome.length,
+                                   weight=w)
+
+              result_w$subsample_number <- i
+              result_w
+            })
+
+          }else if(method == "ConNIS"){
+
+            results_tunings <- lapply(weights, function(w){
+              result_w <- ConNIS(ins.positions = ins_positions_subsample,
                                  gene.names,
                                  gene.starts,
                                  gene.stops,
@@ -202,79 +222,79 @@ subsampleResults <- function(method="ConNIS",
                                  genome.length,
                                  weight=w)
 
-            result_w$subsample_number <- i
-            result_w
-          })
+              result_w$subsample_number <- i
+              result_w
+            })
 
-        }else if(method == "ConNIS"){
+          }else if(method == "Geometric"){
 
-          results_tunings <- lapply(weights, function(w){
-            result_w <- ConNIS(ins.positions = ins_positions_subsample,
-                               gene.names,
-                               gene.starts,
-                               gene.stops,
-                               num.ins.per.gene,
-                               genome.length,
-                               weight=w)
+            results_tunings <- lapply(weights, function(w){
+              result_w <- Geometric(ins.positions = ins_positions_subsample,
+                                    gene.names,
+                                    gene.starts,
+                                    gene.stops,
+                                    num.ins.per.gene,
+                                    genome.length,
+                                    weight=w)
 
-            result_w$subsample_number <- i
-            result_w
-          })
+              result_w$subsample_number <- i
+              result_w
+            })
 
-        }else if(method == "Geometric"){
+          }else if(method == "Tn5Gaps"){
 
-          results_tunings <- lapply(weights, function(w){
-            result_w <- Geometric(ins.positions = ins_positions_subsample,
+            results_tunings <- lapply(weights, function(w){
+              result_w <- Tn5Gaps(ins.positions = ins_positions_subsample,
                                   gene.names,
                                   gene.starts,
                                   gene.stops,
-                                  num.ins.per.gene,
                                   genome.length,
                                   weight=w)
 
-            result_w$subsample_number <- i
-            result_w
-          })
+              result_w$subsample_number <- i
+              result_w
+            })
 
-        }else if(method == "Tn5Gaps"){
+          }
 
-          results_tunings <- lapply(weights, function(w){
-            result_w <- Tn5Gaps(ins.positions = ins_positions_subsample,
-                                gene.names,
-                                gene.starts,
-                                gene.stops,
-                                genome.length,
-                                weight=w)
+          do.call(rbind, results_tunings)
 
-            result_w$subsample_number <- i
-            result_w
-          })
-
-        }
-
-        do.call(rbind, results_tunings)
-
-      })
+        })
 
 
-    }else if(parallelization.type == "mclapply"){
+      }else if(parallelization.type == "mclapply"){
 
-      # set RNG fpr mclapply; NOTE: other than "L'Ecuyer-CMRG" might not give
-      # reproducable results
-      RNGkind(set.rng)
-      set.seed(seed)
+        # set RNG fpr mclapply; NOTE: other than "L'Ecuyer-CMRG" might not give
+        # reproducable results
+        RNGkind(set.rng)
+        set.seed(seed)
 
-      subsample_results <- mclapply(X = 1:m, mc.cores = numCores, FUN =  function(i){
+        subsample_results <- mclapply(X = 1:m, mc.cores = numCores, FUN =  function(i){
 
-        # draw subsamples of IS
-        ins_positions_subsample <-
-          sort(sample(ins.positions, size=length(ins.positions)*d, replace = F))
+          # draw subsamples of IS
+          ins_positions_subsample <-
+            sort(sample(ins.positions, size=length(ins.positions)*d, replace = F))
 
 
-        if(method == "Binomial"){
+          if(method == "Binomial"){
 
-          results_tunings <- lapply(weights, function(w){
-            result_w <- Binomial(ins.positions = ins_positions_subsample,
+            results_tunings <- lapply(weights, function(w){
+              result_w <- Binomial(ins.positions = ins_positions_subsample,
+                                   gene.names,
+                                   gene.starts,
+                                   gene.stops,
+                                   num.ins.per.gene,
+                                   genome.length,
+                                   weight=w)
+
+              result_w$subsample_number <- i
+              result_w
+            })
+
+          }else if(method == "ConNIS"){
+
+            results_tunings <- lapply(weights, function(w){
+              result_w <- ConNIS(ins.positions = ins_positions_subsample,
                                  gene.names,
                                  gene.starts,
                                  gene.stops,
@@ -282,150 +302,140 @@ subsampleResults <- function(method="ConNIS",
                                  genome.length,
                                  weight=w)
 
-            result_w$subsample_number <- i
-            result_w
-          })
+              result_w$subsample_number <- i
+              result_w
+            })
 
-        }else if(method == "ConNIS"){
+          }else if(method == "Geometric"){
 
-          results_tunings <- lapply(weights, function(w){
-            result_w <- ConNIS(ins.positions = ins_positions_subsample,
-                               gene.names,
-                               gene.starts,
-                               gene.stops,
-                               num.ins.per.gene,
-                               genome.length,
-                               weight=w)
+            results_tunings <- lapply(weights, function(w){
+              result_w <- Geometric(ins.positions = ins_positions_subsample,
+                                    gene.names,
+                                    gene.starts,
+                                    gene.stops,
+                                    num.ins.per.gene,
+                                    genome.length,
+                                    weight=w)
 
-            result_w$subsample_number <- i
-            result_w
-          })
+              result_w$subsample_number <- i
+              result_w
+            })
 
-        }else if(method == "Geometric"){
+          }else if(method == "Tn5Gaps"){
 
-          results_tunings <- lapply(weights, function(w){
-            result_w <- Geometric(ins.positions = ins_positions_subsample,
+            results_tunings <- lapply(weights, function(w){
+              result_w <- Tn5Gaps(ins.positions = ins_positions_subsample,
                                   gene.names,
                                   gene.starts,
                                   gene.stops,
-                                  num.ins.per.gene,
                                   genome.length,
                                   weight=w)
 
-            result_w$subsample_number <- i
-            result_w
-          })
+              result_w$subsample_number <- i
+              result_w
+            })
 
-        }else if(method == "Tn5Gaps"){
+          }
 
-          results_tunings <- lapply(weights, function(w){
-            result_w <- Tn5Gaps(ins.positions = ins_positions_subsample,
-                                gene.names,
-                                gene.starts,
-                                gene.stops,
-                                genome.length,
-                                weight=w)
+          do.call(rbind, results_tunings)
 
-            result_w$subsample_number <- i
-            result_w
-          })
-
-        }
-
-        do.call(rbind, results_tunings)
-
-      })
-
-    }
-
-    subsample_results
-
-  }else{
-
-    # run subsample pricedure sequentally -  might be slow !!!
-    set.seed(seed)
-
-    subsample_results <- lapply(X = 1:m, FUN =  function(i){
-
-      # draw subsamples of IS
-      ins_positions_subsample <-
-        sort(sample(ins.positions, size=length(ins.positions)*d, replace = F))
-
-      if(method == "Binomial"){
-
-        results_tunings <- lapply(weights, function(w){
-          result_w <- Binomial(ins.positions = ins_positions_subsample,
-                               gene.names,
-                               gene.starts,
-                               gene.stops,
-                               num.ins.per.gene,
-                               genome.length,
-                               weight=w)
-
-          result_w$subsample_number <- i
-          result_w
-        })
-
-      }else if(method == "ConNIS"){
-
-        results_tunings <- lapply(weights, function(w){
-          result_w <- ConNIS(ins.positions = ins_positions_subsample,
-                             gene.names,
-                             gene.starts,
-                             gene.stops,
-                             num.ins.per.gene,
-                             genome.length,
-                             weight=w)
-
-          result_w$subsample_number <- i
-          result_w
-        })
-
-      }else if(method == "Geometric"){
-
-        results_tunings <- lapply(weights, function(w){
-          result_w <- Geometric(ins.positions = ins_positions_subsample,
-                                gene.names,
-                                gene.starts,
-                                gene.stops,
-                                num.ins.per.gene,
-                                genome.length,
-                                weight=w)
-
-          result_w$subsample_number <- i
-          result_w
-        })
-
-      }else if(method == "Tn5Gaps"){
-
-        results_tunings <- lapply(weights, function(w){
-          result_w <- Tn5Gaps(ins.positions = ins_positions_subsample,
-                              gene.names,
-                              gene.starts,
-                              gene.stops,
-                              genome.length,
-                              weight=w)
-
-          result_w$subsample_number <- i
-          result_w
         })
 
       }
 
-      do.call(rbind, results_tunings)
+      subsample_results
 
-    })
+    }else{
 
+      # run subsample pricedure sequentally -  might be slow !!!
+      set.seed(seed)
+
+      subsample_results <- lapply(X = 1:m, FUN =  function(i){
+
+        # draw subsamples of IS
+        ins_positions_subsample <-
+          sort(sample(ins.positions, size=length(ins.positions)*d, replace = F))
+
+        if(method == "Binomial"){
+
+          results_tunings <- lapply(weights, function(w){
+            result_w <- Binomial(ins.positions = ins_positions_subsample,
+                                 gene.names,
+                                 gene.starts,
+                                 gene.stops,
+                                 num.ins.per.gene,
+                                 genome.length,
+                                 weight=w)
+
+            result_w$subsample_number <- i
+            result_w
+          })
+
+        }else if(method == "ConNIS"){
+
+          results_tunings <- lapply(weights, function(w){
+            result_w <- ConNIS(ins.positions = ins_positions_subsample,
+                               gene.names,
+                               gene.starts,
+                               gene.stops,
+                               num.ins.per.gene,
+                               genome.length,
+                               weight=w)
+
+            result_w$subsample_number <- i
+            result_w
+          })
+
+        }else if(method == "Geometric"){
+
+          results_tunings <- lapply(weights, function(w){
+            result_w <- Geometric(ins.positions = ins_positions_subsample,
+                                  gene.names,
+                                  gene.starts,
+                                  gene.stops,
+                                  num.ins.per.gene,
+                                  genome.length,
+                                  weight=w)
+
+            result_w$subsample_number <- i
+            result_w
+          })
+
+        }else if(method == "Tn5Gaps"){
+
+          results_tunings <- lapply(weights, function(w){
+            result_w <- Tn5Gaps(ins.positions = ins_positions_subsample,
+                                gene.names,
+                                gene.starts,
+                                gene.stops,
+                                genome.length,
+                                weight=w)
+
+            result_w$subsample_number <- i
+            result_w
+          })
+
+        }
+
+        do.call(rbind, results_tunings)
+
+      })
+
+      subsample_results
+
+    }
+
+    # set the old RNG
+    if(keep.new.RNG == FALSE){
+      RNGkind(current_RNG)
+    }
+
+    # return subsample results
     subsample_results
 
+  }else{
+    print("Did not run subsampleResults()")
   }
 
-  # set the old RNG
-  if(keep.new.RNG == FALSE){
-    RNGkind(current_RNG)
-  }
-
-  # return subsample results
-  subsample_results
 }
 
