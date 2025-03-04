@@ -69,7 +69,7 @@
 #'                   seed = 1)
 #'
 #' # Example with parallelization (mclapply()); use detectCores()-1 to set
-#' workers
+#' # workers
 #' \dontrun{
 #' subsampleResults(method="ConNIS",
 #'                   ins.positions = random_is,
