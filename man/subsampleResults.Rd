@@ -12,7 +12,7 @@ subsampleResults(
   gene.stops,
   num.ins.per.gene = NULL,
   genome.length,
-  weightings = 1,
+  weights = 1,
   m = 100,
   d = 0.5,
   use.parallelization = FALSE,
@@ -40,18 +40,18 @@ subsampleResults(
 
 \item{genome.length}{Length of the genome.}
 
-\item{weightings}{A sequence of weight values that are applied to the
+\item{weights}{A sequence of weight values that are applied to the
 selected method.}
 
 \item{m}{Number of sub samples.}
 
 \item{d}{Proportion of the original IS used as sub samples.}
 
-\item{use.parallelization}{Should the calcutltions be done in parallel?}
+\item{use.parallelization}{Should the calculations be done in parallel?}
 
 \item{parallelization.type}{Which method should be used for the
-parallelization? Available are \code{"mclapply"} and \code{"parLapply"} of the
-\code{"parallel"} package.}
+parallelization? Available are \code{"mclapply"} (fork mechanism) and
+\code{"parLapply"} (creation of sockets) of the \code{"parallel"} package.}
 
 \item{numCores}{Number of cores to juse for parallel calculation. Should not
 exit the number of available (logical) cores of the system.}
@@ -103,13 +103,13 @@ subsampleResults(method="ConNIS",
                   gene.starts = starts,
                   gene.stops = stops,
                   genome.length = genome_length,
-                  weightings = c(0.3, 0.6),
+                  weights = c(0.3, 0.6),
                   m = 2,
                   d = 0.5,
                   use.parallelization = FALSE,
                   seed = 1)
 
-# Example with parallelization (mclapply)
+# Example with parallelization (mclapply())
 \dontrun{
 subsampleResults(method="ConNIS",
                   ins.positions = random_is,
@@ -117,7 +117,7 @@ subsampleResults(method="ConNIS",
                   gene.starts = starts,
                   gene.stops = stops,
                   genome.length = genome_length,
-                  weightings = c(0.3, 0.6),
+                  weights = c(0.3, 0.6),
                   m = 2,
                   d = 0.5,
                   use.parallelization = T,

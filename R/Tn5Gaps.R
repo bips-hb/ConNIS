@@ -15,7 +15,7 @@
 #' @param gene.starts Starting position within the genome of each gene.
 #' @param gene.stops Ending position within the genome of each gene.
 #' @param genome.length Length of the genome.
-#' @param weighting A weighting value for the genome-wide insertion density.
+#' @param weight A weight value for the genome-wide insertion density.
 #'
 #' @returns The p-values for each gene to observe its biggest gap.
 #'
@@ -48,7 +48,7 @@ Tn5Gaps <- function(ins.positions,
                     gene.starts,
                     gene.stops,
                     genome.length,
-                    weighting=1){
+                    weight=1){
 
   if(!length(unique(
     c(length(gene.names),
@@ -63,7 +63,7 @@ Tn5Gaps <- function(ins.positions,
         unique(ins.positions),
         genome.length)))
 
-  pins <- length(unique(ins.positions))/genome.length * weighting
+  pins <- length(unique(ins.positions))/genome.length * weight
 
   pnon <- 1 - pins
 
@@ -120,7 +120,7 @@ Tn5Gaps <- function(ins.positions,
 
     tibble(gene = gene.names[i],
            p_value = p_value,
-           weight_value = weighting)
+           weight_value = weight)
 
   })
 

@@ -11,7 +11,7 @@ Binomial(
   gene.stops,
   num.ins.per.gene = NULL,
   genome.length,
-  weighting = 1
+  weight = 1
 )
 }
 \arguments{
@@ -27,7 +27,7 @@ Binomial(
 
 \item{genome.length}{Length of the genome.}
 
-\item{weighting}{A weighting value for the genome-wide insertion density.}
+\item{weight}{A weight value for the genome-wide insertion density.}
 }
 \value{
 The p-values for each gene to observe its biggest gap.

@@ -16,7 +16,7 @@
 #' @param gene.stops Ending position within the genome of each gene.
 #' @param num.ins.per.gene Number of unique insertion sites within each gene.
 #' @param genome.length Length of the genome.
-#' @param weighting A weighting value for the genome-wide insertion density.
+#' @param weight A weight value for the genome-wide insertion density.
 #'
 #' @returns The p-values for each gene to observe its biggest gap.
 #'
@@ -50,7 +50,7 @@ Geometric <- function(ins.positions,
                       gene.stops,
                       num.ins.per.gene=NULL,
                       genome.length,
-                      weighting=1){
+                      weight=1){
 
   if (is.null(num.ins.per.gene)) {
     if (!length(unique(
@@ -113,11 +113,11 @@ Geometric <- function(ins.positions,
     )
     max_gap <- min(gene_i_length, max_gap)
 
-    p_value <- 1 - pgeom(max_gap, observed_genome_insertion_densitiy * weighting)
+    p_value <- 1 - pgeom(max_gap, observed_genome_insertion_densitiy * weight)
 
     tibble(gene = gene.names[i],
            p_value = p_value,
-           weight_value = weighting)
+           weight_value = weight)
   })
 
   results_per_gene <- do.call(rbind, results_per_gene)

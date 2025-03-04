@@ -14,14 +14,14 @@
 #' @param gene.stops Ending position within the genome of each gene.
 #' @param num.ins.per.gene Number of unique insertion sites within each gene.
 #' @param genome.length Length of the genome.
-#' @param weightings A sequence of weight values that are applied to the
+#' @param weights A sequence of weight values that are applied to the
 #' selected method.
 #' @param m Number of sub samples.
 #' @param d Proportion of the original IS used as sub samples.
-#' @param use.parallelization Should the calcutltions be done in parallel?
+#' @param use.parallelization Should the calculations be done in parallel?
 #' @param parallelization.type Which method should be used for the
-#' parallelization? Available are `"mclapply"` and `"parLapply"` of the
-#' `"parallel"` package.
+#' parallelization? Available are `"mclapply"` (fork mechanism) and
+#' `"parLapply"` (creation of sockets) of the `"parallel"` package.
 #' @param numCores Number of cores to juse for parallel calculation. Should not
 #' exit the number of available (logical) cores of the system.
 #' @param cluster.type If `"parLapply"` is used as parallelization.type, a
@@ -62,13 +62,13 @@
 #'                   gene.starts = starts,
 #'                   gene.stops = stops,
 #'                   genome.length = genome_length,
-#'                   weightings = c(0.3, 0.6),
+#'                   weights = c(0.3, 0.6),
 #'                   m = 2,
 #'                   d = 0.5,
 #'                   use.parallelization = FALSE,
 #'                   seed = 1)
 #'
-#' # Example with parallelization (mclapply)
+#' # Example with parallelization (mclapply())
 #' \dontrun{
 #' subsampleResults(method="ConNIS",
 #'                   ins.positions = random_is,
@@ -76,7 +76,7 @@
 #'                   gene.starts = starts,
 #'                   gene.stops = stops,
 #'                   genome.length = genome_length,
-#'                   weightings = c(0.3, 0.6),
+#'                   weights = c(0.3, 0.6),
 #'                   m = 2,
 #'                   d = 0.5,
 #'                   use.parallelization = T,
@@ -94,7 +94,7 @@ subsampleResults <- function(method="ConNIS",
                              gene.stops,
                              num.ins.per.gene = NULL,
                              genome.length,
-                             weightings = 1,
+                             weights = 1,
                              m = 100,
                              d = 0.5,
                              use.parallelization=FALSE,
@@ -118,22 +118,22 @@ subsampleResults <- function(method="ConNIS",
 
   # print warnings if RNG or seed is not set appropriately
   if(is.null(seed)){
-    warning("You set either no seed: results might not be reproducable.")
+    warning("No seed set, results might not be reproducable.")
   }
 
   if(is.null(set.rng) & use.parallelization == FALSE){
-    warning(paste("You did not specify an RNG. Will use the current one of this session: ", current_RNG, sep=""))
+    warning("No RNG set, will use the current one of this session: ", current_RNG)
   }
 
   if(is.null(set.rng)){
     if(use.parallelization == TRUE & parallelization.type == "mclapply"){
-      warning(paste("You want to parallize the subsampling with mclapply but you did not use the RNG >>L'Ecuyer-CMRG<<: results might not be reproducable.", sep=""))
+      warning("Subsampling with mclapply but RNG is not set to >>L'Ecuyer-CMRG<<: results might not be reproducable.")
     }
   }
 
   if(!is.null(set.rng)){
     if(set.rng != "L'Ecuyer-CMRG" & use.parallelization == TRUE & parallelization.type == "mclapply"){
-      warning(paste("You want to parallize the subsampling with mclapply but you did not use the RNG >>L'Ecuyer-CMRG<<: results might not be reproducable.", sep=""))
+      warning("Subsampling with mclapply but RNG is not set to >>L'Ecuyer-CMRG<<: results might not be reproducable.")
     }
   }
 
@@ -166,7 +166,7 @@ subsampleResults <- function(method="ConNIS",
                       "gene.stops",
                       "num.ins.per.gene",
                       "genome.length",
-                      "weightings",
+                      "weights",
                       "m",
                       "d",
                       "prob_seq_misses",
@@ -192,14 +192,14 @@ subsampleResults <- function(method="ConNIS",
 
         if(method == "Binomial"){
 
-          results_tunings <- lapply(weightings, function(w){
+          results_tunings <- lapply(weights, function(w){
             result_w <- Binomial(ins.positions = ins_positions_subsample,
                                  gene.names,
                                  gene.starts,
                                  gene.stops,
                                  num.ins.per.gene,
                                  genome.length,
-                                 weighting=w)
+                                 weight=w)
 
             result_w$subsample_number <- i
             result_w
@@ -207,14 +207,14 @@ subsampleResults <- function(method="ConNIS",
 
         }else if(method == "ConNIS"){
 
-          results_tunings <- lapply(weightings, function(w){
+          results_tunings <- lapply(weights, function(w){
             result_w <- ConNIS(ins.positions = ins_positions_subsample,
                                gene.names,
                                gene.starts,
                                gene.stops,
                                num.ins.per.gene,
                                genome.length,
-                               weighting=w)
+                               weight=w)
 
             result_w$subsample_number <- i
             result_w
@@ -222,14 +222,14 @@ subsampleResults <- function(method="ConNIS",
 
         }else if(method == "Geometric"){
 
-          results_tunings <- lapply(weightings, function(w){
+          results_tunings <- lapply(weights, function(w){
             result_w <- Geometric(ins.positions = ins_positions_subsample,
                                   gene.names,
                                   gene.starts,
                                   gene.stops,
                                   num.ins.per.gene,
                                   genome.length,
-                                  weighting=w)
+                                  weight=w)
 
             result_w$subsample_number <- i
             result_w
@@ -237,13 +237,13 @@ subsampleResults <- function(method="ConNIS",
 
         }else if(method == "Tn5Gaps"){
 
-          results_tunings <- lapply(weightings, function(w){
+          results_tunings <- lapply(weights, function(w){
             result_w <- Tn5Gaps(ins.positions = ins_positions_subsample,
                                 gene.names,
                                 gene.starts,
                                 gene.stops,
                                 genome.length,
-                                weighting=w)
+                                weight=w)
 
             result_w$subsample_number <- i
             result_w
@@ -272,14 +272,14 @@ subsampleResults <- function(method="ConNIS",
 
         if(method == "Binomial"){
 
-          results_tunings <- lapply(weightings, function(w){
+          results_tunings <- lapply(weights, function(w){
             result_w <- Binomial(ins.positions = ins_positions_subsample,
                                  gene.names,
                                  gene.starts,
                                  gene.stops,
                                  num.ins.per.gene,
                                  genome.length,
-                                 weighting=w)
+                                 weight=w)
 
             result_w$subsample_number <- i
             result_w
@@ -287,14 +287,14 @@ subsampleResults <- function(method="ConNIS",
 
         }else if(method == "ConNIS"){
 
-          results_tunings <- lapply(weightings, function(w){
+          results_tunings <- lapply(weights, function(w){
             result_w <- ConNIS(ins.positions = ins_positions_subsample,
                                gene.names,
                                gene.starts,
                                gene.stops,
                                num.ins.per.gene,
                                genome.length,
-                               weighting=w)
+                               weight=w)
 
             result_w$subsample_number <- i
             result_w
@@ -302,14 +302,14 @@ subsampleResults <- function(method="ConNIS",
 
         }else if(method == "Geometric"){
 
-          results_tunings <- lapply(weightings, function(w){
+          results_tunings <- lapply(weights, function(w){
             result_w <- Geometric(ins.positions = ins_positions_subsample,
                                   gene.names,
                                   gene.starts,
                                   gene.stops,
                                   num.ins.per.gene,
                                   genome.length,
-                                  weighting=w)
+                                  weight=w)
 
             result_w$subsample_number <- i
             result_w
@@ -317,13 +317,13 @@ subsampleResults <- function(method="ConNIS",
 
         }else if(method == "Tn5Gaps"){
 
-          results_tunings <- lapply(weightings, function(w){
+          results_tunings <- lapply(weights, function(w){
             result_w <- Tn5Gaps(ins.positions = ins_positions_subsample,
                                 gene.names,
                                 gene.starts,
                                 gene.stops,
                                 genome.length,
-                                weighting=w)
+                                weight=w)
 
             result_w$subsample_number <- i
             result_w
@@ -352,14 +352,14 @@ subsampleResults <- function(method="ConNIS",
 
       if(method == "Binomial"){
 
-        results_tunings <- lapply(weightings, function(w){
+        results_tunings <- lapply(weights, function(w){
           result_w <- Binomial(ins.positions = ins_positions_subsample,
                                gene.names,
                                gene.starts,
                                gene.stops,
                                num.ins.per.gene,
                                genome.length,
-                               weighting=w)
+                               weight=w)
 
           result_w$subsample_number <- i
           result_w
@@ -367,14 +367,14 @@ subsampleResults <- function(method="ConNIS",
 
       }else if(method == "ConNIS"){
 
-        results_tunings <- lapply(weightings, function(w){
+        results_tunings <- lapply(weights, function(w){
           result_w <- ConNIS(ins.positions = ins_positions_subsample,
                              gene.names,
                              gene.starts,
                              gene.stops,
                              num.ins.per.gene,
                              genome.length,
-                             weighting=w)
+                             weight=w)
 
           result_w$subsample_number <- i
           result_w
@@ -382,14 +382,14 @@ subsampleResults <- function(method="ConNIS",
 
       }else if(method == "Geometric"){
 
-        results_tunings <- lapply(weightings, function(w){
+        results_tunings <- lapply(weights, function(w){
           result_w <- Geometric(ins.positions = ins_positions_subsample,
                                 gene.names,
                                 gene.starts,
                                 gene.stops,
                                 num.ins.per.gene,
                                 genome.length,
-                                weighting=w)
+                                weight=w)
 
           result_w$subsample_number <- i
           result_w
@@ -397,13 +397,13 @@ subsampleResults <- function(method="ConNIS",
 
       }else if(method == "Tn5Gaps"){
 
-        results_tunings <- lapply(weightings, function(w){
+        results_tunings <- lapply(weights, function(w){
           result_w <- Tn5Gaps(ins.positions = ins_positions_subsample,
                               gene.names,
                               gene.starts,
                               gene.stops,
                               genome.length,
-                              weighting=w)
+                              weight=w)
 
           result_w$subsample_number <- i
           result_w

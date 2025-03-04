@@ -18,7 +18,7 @@
 #' @param gene.stops Ending position within the genome of each gene.
 #' @param num.ins.per.gene Number of unique insertion sites within each gene.
 #' @param genome.length Length of the genome.
-#' @param weighting A weighting value for the genome-wide insertion density.
+#' @param weight A weight value for the genome-wide insertion density.
 #'
 #' @returns The p-values for each gene to observe its biggest gap.
 #'
@@ -52,7 +52,7 @@ Binomial <- function(ins.positions,
                      gene.stops,
                      num.ins.per.gene=NULL,
                      genome.length,
-                     weighting=1){
+                     weight=1){
 
   if (is.null(num.ins.per.gene)) {
     if (!length(unique(
@@ -100,7 +100,7 @@ Binomial <- function(ins.positions,
 
     p_value <- sum(dbinom(0:gene_i_num_ins,
                           gene_i_length,
-                          observed_genome_insertion_densitiy * weighting))
+                          observed_genome_insertion_densitiy * weight))
 
     if(is.na(p_value)){
       p_value <- 1
@@ -108,7 +108,7 @@ Binomial <- function(ins.positions,
 
     tibble(gene = gene.names[i],
            p_value = p_value,
-           weight_value = weighting)
+           weight_value = weight)
 
 
   })

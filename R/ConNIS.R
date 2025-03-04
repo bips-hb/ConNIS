@@ -19,7 +19,7 @@
 #' @param gene.stops Ending position within the genome of each gene.
 #' @param num.ins.per.gene Number of unique insertion sites within each gene.
 #' @param genome.length Length of the genome.
-#' @param weighting A weighting value for the genome-wide insertion density.
+#' @param weight A weight value for the genome-wide insertion density.
 #'
 #' @returns The p-values for each gene to observe its biggest gap.
 #'
@@ -50,7 +50,7 @@ ConNIS <- function(ins.positions,
                    gene.stops,
                    num.ins.per.gene = NULL,
                    genome.length,
-                   weighting = 1) {
+                   weight = 1) {
   if (is.null(num.ins.per.gene)) {
     if (!length(unique(
       c(
@@ -118,43 +118,43 @@ ConNIS <- function(ins.positions,
         prob_seq_misses(
           gene_i_length,
           gene_i_length -
-            expected_num_IS_gene_i * weighting
+            expected_num_IS_gene_i * weight
         )
       p_value <-
         sum(probs[max_gap:(gene_i_length -
-          expected_num_IS_gene_i * weighting)])
+          expected_num_IS_gene_i * weight)])
 
       if (gene_i_length == gene_i_num_ins) {
         p_value <- 1
       }
-      if (max_gap >= gene_i_length - expected_num_IS_gene_i * weighting) {
+      if (max_gap >= gene_i_length - expected_num_IS_gene_i * weight) {
         p_value <- probs[length(probs)]
       }
     } else {
       if (gene_i_length == gene_i_num_ins) {
         p_value <- 1
       }
-      if (max_gap >= gene_i_length - expected_num_IS_gene_i * weighting) {
+      if (max_gap >= gene_i_length - expected_num_IS_gene_i * weight) {
         p_value <-
           as.numeric(chooseZ(
-            gene_i_length - (gene_i_length - expected_num_IS_gene_i * weighting) - 1,
-            gene_i_length - expected_num_IS_gene_i * weighting -
-              (gene_i_length - expected_num_IS_gene_i * weighting)
+            gene_i_length - (gene_i_length - expected_num_IS_gene_i * weight) - 1,
+            gene_i_length - expected_num_IS_gene_i * weight -
+              (gene_i_length - expected_num_IS_gene_i * weight)
           ) /
             chooseZ(
               gene_i_length - 1,
-              gene_i_length - expected_num_IS_gene_i * weighting - 1
+              gene_i_length - expected_num_IS_gene_i * weight - 1
             ))
       } else {
         probs <-
           sapply(1:(max_gap - 1), function(s) {
             as.numeric(chooseZ(
               gene_i_length - s - 1,
-              gene_i_length - expected_num_IS_gene_i * weighting - s
+              gene_i_length - expected_num_IS_gene_i * weight - s
             ) /
               chooseZ(
                 gene_i_length - 1,
-                gene_i_length - expected_num_IS_gene_i * weighting - 1
+                gene_i_length - expected_num_IS_gene_i * weight - 1
               ))
           })
 
@@ -165,7 +165,7 @@ ConNIS <- function(ins.positions,
     tibble(
       gene = gene.names[i],
       p_value = p_value,
-      weight_value = weighting
+      weight_value = weight
     )
   })
 
