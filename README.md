@@ -33,7 +33,8 @@ devtools::install_github("moritz-hanke/ConNIS")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+We use a truncated real world dataset and a list of truncated insertion
+sites as an example for applying ConNIS.
 
 ``` r
 
@@ -57,7 +58,7 @@ library(ConNIS)
 #>     %*%, apply, crossprod, matrix, tcrossprod
 
 # Use the E. coli BW 25113 dataset but only the first 100 genes
-truncated_ecoli <- ecoli_bw25113[70:100,]
+truncated_ecoli <- ecoli_bw25113[50:100,]
 
 # load the insertion sites by Goodall, 2018, but omit all insertion sites that are
 # within the truncated_ecoli
@@ -74,20 +75,20 @@ results_ConNIS <-
        weight = 1)
 
 results_ConNIS
-#> # A tibble: 31 × 3
-#>    gene            p_value weight_value
-#>    <chr>             <dbl>        <dbl>
-#>  1 leuC              0.523            1
-#>  2 leuB              0.481            1
-#>  3 leuA              0.508            1
-#>  4 leuL              1                1
-#>  5 leuO              0.802            1
-#>  6 yabR              1                1
-#>  7 ilvI              0.732            1
-#>  8 ilvH              0.729            1
-#>  9 BW25113_RS00395   1                1
-#> 10 cra               0.571            1
-#> # ℹ 21 more rows
+#> # A tibble: 51 × 3
+#>    gene             p_value weight_value
+#>    <chr>              <dbl>        <dbl>
+#>  1 pdxA            1.77e- 1            1
+#>  2 surA            1.91e- 1            1
+#>  3 lptD            4.88e-35            1
+#>  4 djlA            2.63e- 1            1
+#>  5 yabP            4.78e- 1            1
+#>  6 yabQ            5.51e- 1            1
+#>  7 BW25113_RS25400 7.75e- 1            1
+#>  8 rluA            3.55e- 1            1
+#>  9 rapA            1.76e- 1            1
+#> 10 polB            1.22e- 1            1
+#> # ℹ 41 more rows
 ```
 
 Using a simple “Bonferroni correction” with $\alpha=0.05$ for multiple
@@ -95,22 +96,23 @@ testing problem ConNIS declared the follwing 13 genes as essential:
 
 ``` r
 results_ConNIS %>% filter(p_value <= 0.05/nrow(truncated_ecoli))
-#> # A tibble: 13 × 3
+#> # A tibble: 14 × 3
 #>    gene   p_value weight_value
 #>    <chr>    <dbl>        <dbl>
-#>  1 ftsI  2.65e-11            1
-#>  2 murE  1.66e-14            1
-#>  3 murF  5.23e- 7            1
-#>  4 mraY  4.75e- 9            1
-#>  5 murD  8.54e- 8            1
-#>  6 ftsW  2.81e- 5            1
-#>  7 murG  4.95e- 9            1
-#>  8 murC  1.73e-14            1
-#>  9 ftsQ  2.91e- 6            1
-#> 10 ftsA  1.58e- 5            1
-#> 11 ftsZ  3.95e- 9            1
-#> 12 lpxC  7.81e- 9            1
-#> 13 secA  6.30e- 6            1
+#>  1 lptD  4.88e-35            1
+#>  2 ftsI  2.84e-28            1
+#>  3 murE  3.78e-32            1
+#>  4 murF  1.73e-18            1
+#>  5 mraY  1.85e-22            1
+#>  6 murD  5.07e-21            1
+#>  7 ftsW  3.06e-12            1
+#>  8 murG  2.09e-22            1
+#>  9 murC  4.72e-30            1
+#> 10 ftsQ  1.91e-17            1
+#> 11 ftsA  3.91e-14            1
+#> 12 ftsZ  9.25e-25            1
+#> 13 lpxC  8.32e-20            1
+#> 14 secA  4.34e-14            1
 ```
 
 Next, we re-run ConNIS with a smaller weight and apply again a the
@@ -126,17 +128,21 @@ results_ConNIS <-
        weight = 0.2)
 
 results_ConNIS %>% filter(p_value <= 0.05/nrow(truncated_ecoli))
-#> # A tibble: 8 × 3
-#>   gene   p_value weight_value
-#>   <chr>    <dbl>        <dbl>
-#> 1 ftsI  0.000339          0.2
-#> 2 murE  0.000672          0.2
-#> 3 mraY  0.000924          0.2
-#> 4 murG  0.000937          0.2
-#> 5 murC  0.000678          0.2
-#> 6 ftsQ  0.00120           0.2
-#> 7 ftsZ  0.000869          0.2
-#> 8 lpxC  0.00109           0.2
+#> # A tibble: 12 × 3
+#>    gene        p_value weight_value
+#>    <chr>         <dbl>        <dbl>
+#>  1 lptD  0.000000267            0.2
+#>  2 ftsI  0.00000595             0.2
+#>  3 murE  0.00000000183          0.2
+#>  4 murF  0.0000203              0.2
+#>  5 mraY  0.00000171             0.2
+#>  6 murD  0.00000534             0.2
+#>  7 murG  0.00000176             0.2
+#>  8 murC  0.00000000187          0.2
+#>  9 ftsQ  0.00000291             0.2
+#> 10 ftsA  0.000255               0.2
+#> 11 ftsZ  0.00000151             0.2
+#> 12 lpxC  0.00000238             0.2
 ```
 
 Only 8 genes are declared essential since smaller weights will make it
@@ -144,13 +150,14 @@ harder to label a gene (by chance) as ‘essential’.
 
 Next, we give an example how to select a weight by the instability
 approach. We will use the parallel version of the function using
-`mclapply`. We use different weights. NOTE: This might take a bit since
-we use 200 subsamples. You can reduce the number of subsamples.
+`mclapply`. We use different weights. NOTE: We use only 30 subsamples
+for demonstration purpose. For real world applications we suggest
+$m \approx  500$ and parallel processing uization of the .
 
 ``` r
 
 # set weight
-weights <- seq(0.1, 1, 0.1)
+weights <- seq(0.2, 1, 0.2)
 
 out <- 
   instabilities(
@@ -172,19 +179,14 @@ out <-
   set.rng = "L'Ecuyer-CMRG")
 
 out
-#> # A tibble: 10 × 2
-#>    weight_value instability
-#>           <dbl>       <dbl>
-#>  1          0.1       0.157
-#>  2          0.2       0.157
-#>  3          0.3       0.157
-#>  4          0.4       0.147
-#>  5          0.5       0.147
-#>  6          0.6       0.195
-#>  7          0.7       0.195
-#>  8          0.8       0.195
-#>  9          0.9       0.195
-#> 10          1         0.195
+#> # A tibble: 5 × 2
+#>   weight_value instability
+#>          <dbl>       <dbl>
+#> 1          0.2       0.195
+#> 2          0.4       0.201
+#> 3          0.6       0.154
+#> 4          0.8       0.154
+#> 5          1         0.154
 ```
 
 You can also embed plots, for example:
