@@ -17,7 +17,7 @@ subsampleResults(
   d = 0.5,
   use.parallelization = FALSE,
   parallelization.type = "mclapply",
-  numCores = 3,
+  numCores = NULL,
   cluster.type = NULL,
   seed = NULL,
   set.rng = NULL,
@@ -86,7 +86,7 @@ set.seed(1)
 random_is <- sort(sample(1:10000, 2000))
 
 # generate dummy gene names
-genes <- paste("gene_", 1:30)
+genes <- paste("gene_", 1:30, sep="")
 
 # generate radom start points and stop points of the dummy genes
 set.seed(2)
@@ -122,8 +122,9 @@ subsampleResults(method="ConNIS",
                   m = 2,
                   d = 0.5,
                   use.parallelization = T,
-                  parallelization.type="mclapply",
-                  numCores=max(1,detectCores()-1),
+                  parallelization.type = "mclapply",
+                  set.rng = "L'Ecuyer-CMRG",
+                  numCores = max(1,detectCores()-1),
                   seed = 1)
 }
 

@@ -7,8 +7,6 @@
 #' \frac{\binom{n-s-2}{k-s}}{\binom{n-1}{k-1}}
 #' }
 #'
-#' @import gmp
-#'
 #' @param n Number of urns.
 #' @param k Number empty urns.
 #' @param s Optional. Calculate probabilities only for a give sequence of length

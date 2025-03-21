@@ -25,7 +25,7 @@
 #' random_is <- sort(sample(1:10000, 2000))
 #'
 #' # generate dummy gene names
-#' genes <- paste("gene_", 1:30)
+#' genes <- paste("gene_", 1:30, sep="")
 #'
 #' # generate radom start points and stop points of the dummy genes
 #' set.seed(2)

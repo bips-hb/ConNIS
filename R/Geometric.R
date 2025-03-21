@@ -8,8 +8,6 @@
 #' weighted by \eqn{0 < w \leq 1} to account for regions with low insertion
 #' densities.
 #'
-#' @importFrom stats pgeom
-#'
 #' @param ins.positions Numeric vector of position of observed insertions sites.
 #' @param gene.names The names of the genes.
 #' @param gene.starts Starting position within the genome of each gene.
@@ -26,7 +24,7 @@
 #' random_is <- sort(sample(1:10000, 2000))
 #'
 #' # generate dummy gene names
-#' genes <- paste("gene_", 1:30)
+#' genes <- paste("gene_", 1:30, sep="")
 #'
 #' # generate radom start points and stop points of the dummy genes
 #' set.seed(2)

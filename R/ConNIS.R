@@ -10,9 +10,6 @@
 #' \eqn{w} we is a weight value to adjust for regions with an insertion density
 #' below \eqn{\theta}.
 #'
-#' @importFrom Rdpack reprompt
-#' @importFrom tibble tibble
-#'
 #' @param ins.positions Numeric vector of position of observed insertions sites.
 #' @param gene.names The names of the genes.
 #' @param gene.starts Starting position within the genome of each gene.
@@ -29,7 +26,7 @@
 #' random_is <- sort(sample(1:10000, 2000))
 #'
 #' # generate dummy gene names
-#' genes <- paste("gene_", 1:30)
+#' genes <- paste("gene_", 1:30, sep="")
 #'
 #' # generate radom start points and stop points of the dummy genes
 #' set.seed(2)

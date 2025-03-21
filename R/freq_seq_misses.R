@@ -9,8 +9,6 @@
 #' }
 #' The function uses the `chooseZ` function of the `gmp` package.
 #'
-#' @import gmp
-#'
 #' @param n Number of urns.
 #' @param k Number of empty urns.
 #' @param s Optional. Calculate possibilities only for a give sequence of length

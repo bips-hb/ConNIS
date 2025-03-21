@@ -4,8 +4,6 @@
 #' calculates for each subsample the results for a user selected analysis
 #' method.
 #'
-#' @importFrom parallel parLapply
-#'
 #' @param method Method that will be applied to subsamples. Available are
 #' `"Binomial"`, `"ConNIS"`, `"Geometric"` and `"Tn5Gaps"`.
 #' @param ins.positions Numeric vector of position of observed insertions sites.
@@ -45,7 +43,7 @@
 #' random_is <- sort(sample(1:10000, 2000))
 #'
 #' # generate dummy gene names
-#' genes <- paste("gene_", 1:30)
+#' genes <- paste("gene_", 1:30, sep="")
 #'
 #' # generate radom start points and stop points of the dummy genes
 #' set.seed(2)
@@ -83,7 +81,7 @@
 #'                   use.parallelization = T,
 #'                   parallelization.type = "mclapply",
 #'                   set.rng = "L'Ecuyer-CMRG",
-#'                   numCores=max(1,detectCores()-1),
+#'                   numCores = max(1,detectCores()-1),
 #'                   seed = 1)
 #' }
 #'
@@ -99,13 +97,13 @@ subsampleResults <- function(method="ConNIS",
                              weights = 1,
                              m = 100,
                              d = 0.5,
-                             use.parallelization=FALSE,
-                             parallelization.type="mclapply",
-                             numCores=3,
+                             use.parallelization = FALSE,
+                             parallelization.type = "mclapply",
+                             numCores = NULL,
                              cluster.type = NULL,
                              seed = NULL,
                              set.rng = NULL,
-                             keep.new.RNG=FALSE){
+                             keep.new.RNG = FALSE){
 
   current_RNG <-RNGkind()[1]
   proceed <- 1

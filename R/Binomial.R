@@ -10,8 +10,6 @@
 #' insertion densities. For \eqn{w=1} the approach is the original method of
 #' \insertCite{Burger2017;textual}{ConNIS}.
 #'
-#' @importFrom stats dbinom
-#'
 #' @param ins.positions Numeric vector of position of observed insertions sites.
 #' @param gene.names The names of the genes.
 #' @param gene.starts Starting position within the genome of each gene.
@@ -28,7 +26,7 @@
 #' random_is <- sort(sample(1:10000, 2000))
 #'
 #' # generate dummy gene names
-#' genes <- paste("gene_", 1:30)
+#' genes <- paste("gene_", 1:30, sep="")
 #'
 #' # generate radom start points and stop points of the dummy genes
 #' set.seed(2)
