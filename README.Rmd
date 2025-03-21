@@ -43,12 +43,13 @@ This is a basic example which shows you how to solve a common problem:
 
 library(ConNIS)
 
-# Use the E. coli BW 25113 dataset but only the first 250 genes
-truncated_ecoli <- ecoli_bw25113[1:250,]
+# Use the E. coli BW 25113 dataset but only the first 100 genes
+truncated_ecoli <- ecoli_bw25113[70:100,]
 
-# load the insertion sites by Goodall, 2018, but omit all insertion sites beyond
-# the 250th gene
-truncated_is_pos <- is_pos[is_pos <= max(truncated_ecoli$end)]
+# load the insertion sites by Goodall, 2018, but omit all insertion sites that are
+# within the truncated_ecoli
+truncated_is_pos <- is_pos[is_pos <= max(truncated_ecoli$end) &
+                           is_pos >= min(truncated_ecoli$start)]
 
 # run ConNIS with weight = 1
 results_ConNIS <- 
@@ -62,21 +63,13 @@ results_ConNIS <-
 results_ConNIS
 ```
 
-Using the `p.adjust()` function we use the "Bonferroni correction" for the multiple testing problem and select the genes that are siginificant.
+Using a simple "Bonferroni correction" with $\alpha=0.05$ for multiple testing problem ConNIS declared the follwing 13 genes as essential:
 
 ```{r exampleGetSignificantGenes}
-
-results_ConNIS$adjusted_p_value <-
-  p.adjust(results_ConNIS$p_value, method = "bonferroni") <= 0.05
-
-(
-  results_ConNIS %>% 
-    filter(adjusted_p_value) 
-  )$gene
+results_ConNIS %>% filter(p_value <= 0.05/nrow(truncated_ecoli))
 ```
-We declare 55 genes to be essential (note, this is not the complete data set).
 
-Next, we re-reun ConNIS but with a smaller weight
+Next, we re-run ConNIS with a smaller weight and apply again a the "Bonferroni" method.
 
 ```{r rerunConNIS}
 results_ConNIS <- 
@@ -85,104 +78,40 @@ results_ConNIS <-
        gene.starts = truncated_ecoli$start, 
        gene.stops = truncated_ecoli$end, 
        genome.length = max(truncated_ecoli$end), 
-       weight = 0.3)
+       weight = 0.2)
 
-results_ConNIS$adjusted_p_value <-
-  p.adjust(results_ConNIS$p_value, method = "bonferroni") <= 0.05
-
-(
-  results_ConNIS %>% 
-    filter(adjusted_p_value) 
-  )$gene
+results_ConNIS %>% filter(p_value <= 0.05/nrow(truncated_ecoli))
 
 ```
-Only 39 genes are declared essential since smaller weights will make it harder to label a gene by chance as 'essential'. 
+Only 8 genes are declared essential since smaller weights will make it harder to label a gene (by chance) as 'essential'. 
 
-Next, we compare ConNIS with Binomial, Gemeotric and Tn5Gaps all with the same weigth.
+Next, we give an example how to select a weight by the instability approach. We will use the parallel version of the function using `mclapply`. We use different weights. NOTE: This might take a bit since we use 200 subsamples. You can reduce the number of subsamples.
 
-```{r comparisonMethods}
-results_Binomial <- 
-  Binomial(ins.positions = truncated_is_pos, 
-       gene.names = truncated_ecoli$gene, 
-       gene.starts = truncated_ecoli$start, 
-       gene.stops = truncated_ecoli$end, 
-       genome.length = max(truncated_ecoli$end), 
-       weight = 0.3)
+```{r instability}
 
-results_Binomial$adjusted_p_value <-
-  p.adjust(results_Binomial$p_value, method = "bonferroni") <= 0.05
+# set weight
+weights <- seq(0.1, 1, 0.1)
 
-ess_genes_Binomial <- 
-  (
-  results_Binomial %>% 
-    filter(adjusted_p_value) 
-  )$gene
+out <- 
+  instabilities(
+  method="ConNIS", 
+  sig.level = 0.05, 
+  p.adjust.mehtod = "bonferroni", 
+  ins.positions = truncated_is_pos, 
+  gene.names = truncated_ecoli$gene, 
+  gene.starts = truncated_ecoli$start, 
+  gene.stops = truncated_ecoli$end, 
+  genome.length = max(truncated_ecoli$end), 
+  weights = weights, 
+  m = 30, 
+  d = 0.5, 
+  use.parallelization = T, 
+  parallelization.type = "mclapply", 
+  numCores = detectCores()-1, 
+  seed = 1, 
+  set.rng = "L'Ecuyer-CMRG")
 
-results_ConNIS <- 
-  ConNIS(ins.positions = truncated_is_pos, 
-       gene.names = truncated_ecoli$gene, 
-       gene.starts = truncated_ecoli$start, 
-       gene.stops = truncated_ecoli$end, 
-       genome.length = max(truncated_ecoli$end), 
-       weight =  0.3)
-
-results_ConNIS$adjusted_p_value <-
-  p.adjust(results_ConNIS$p_value, method = "bonferroni") <= 0.05
-
-ess_genes_ConNIS <- 
-  (
-  results_ConNIS %>% 
-    filter(adjusted_p_value) 
-  )$gene
-
-results_Geometric <- 
-  Geometric(ins.positions = truncated_is_pos, 
-       gene.names = truncated_ecoli$gene, 
-       gene.starts = truncated_ecoli$start, 
-       gene.stops = truncated_ecoli$end, 
-       genome.length = max(truncated_ecoli$end), 
-       weight =  0.3)
-
-results_Geometric$adjusted_p_value <-
-  p.adjust(results_Geometric$p_value, method = "bonferroni") <= 0.05
-
-ess_genes_Geometric <- 
-  (
-  results_Geometric %>% 
-    filter(adjusted_p_value) 
-  )$gene
-
-results_Tn5Gaps <- 
-  Tn5Gaps(ins.positions = truncated_is_pos, 
-       gene.names = truncated_ecoli$gene, 
-       gene.starts = truncated_ecoli$start, 
-       gene.stops = truncated_ecoli$end, 
-       genome.length = max(truncated_ecoli$end), 
-       weight = 0.3)
-
-results_Tn5Gaps$adjusted_p_value <-
-  p.adjust(results_Tn5Gaps$p_value, method = "bonferroni") <= 0.05
-
-ess_genes_Tn5Gaps <- 
-  (
-  results_Tn5Gaps %>% 
-    filter(adjusted_p_value) 
-  )$gene
-```
-
-We use a Venn diagramm to compare the results:
-
-```{r}
-library(ggvenn)
-
-ess_genes <- list(
-  `Binomial` = ess_genes_Binomial,
-  `ConNIS` = ess_genes_ConNIS,
-  `Geometric` = ess_genes_Geometric,
-  `Tn5Gaps` = ess_genes_Tn5Gaps
-)
-
-ggvenn(ess_genes)
+out
 
 ```
 
