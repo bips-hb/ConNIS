@@ -174,7 +174,7 @@ out <-
   gene.stops = truncated_ecoli$end, 
   genome.length = max(truncated_ecoli$end), 
   weights = weights, 
-  m = 30, 
+  m = 100, 
   d = 0.5, 
   use.parallelization = T, 
   parallelization.type = "mclapply", 
@@ -186,11 +186,11 @@ out
 #> # A tibble: 5 × 2
 #>   weight_value instability
 #>          <dbl>       <dbl>
-#> 1          0.2       0.200
-#> 2          0.4       0.176
-#> 3          0.6       0.135
-#> 4          0.8       0.132
-#> 5          1         0.108
+#> 1          0.2      0.158 
+#> 2          0.4      0.178 
+#> 3          0.6      0.130 
+#> 4          0.8      0.108 
+#> 5          1        0.0793
 ```
 
 You can also embed plots, for example:

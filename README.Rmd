@@ -103,7 +103,7 @@ out <-
   gene.stops = truncated_ecoli$end, 
   genome.length = max(truncated_ecoli$end), 
   weights = weights, 
-  m = 30, 
+  m = 100, 
   d = 0.5, 
   use.parallelization = T, 
   parallelization.type = "mclapply", 
