@@ -44,7 +44,7 @@ We use a truncated real world dataset and a list of truncated insertion sites as
 library(ConNIS)
 
 # Use the E. coli BW 25113 dataset but only the first 100 genes
-truncated_ecoli <- ecoli_bw25113[50:100,]
+truncated_ecoli <- ecoli_bw25113[1:100,]
 
 # load the insertion sites by Goodall, 2018, but omit all insertion sites that are
 # within the truncated_ecoli
