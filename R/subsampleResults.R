@@ -81,7 +81,8 @@
 #'                   m = 2,
 #'                   d = 0.5,
 #'                   use.parallelization = T,
-#'                   parallelization.type="mclapply",
+#'                   parallelization.type = "mclapply",
+#'                   set.rng = "L'Ecuyer-CMRG",
 #'                   numCores=max(1,detectCores()-1),
 #'                   seed = 1)
 #' }
