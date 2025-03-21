@@ -58,7 +58,7 @@ library(ConNIS)
 #>     %*%, apply, crossprod, matrix, tcrossprod
 
 # Use the E. coli BW 25113 dataset but only the first 100 genes
-truncated_ecoli <- ecoli_bw25113[1:500,]
+truncated_ecoli <- ecoli_bw25113[501:1000,]
 
 # load the insertion sites by Goodall, 2018, but omit all insertion sites that are
 # within the truncated_ecoli
@@ -76,18 +76,18 @@ results_ConNIS <-
 
 results_ConNIS
 #> # A tibble: 500 × 3
-#>    gene  p_value weight_value
-#>    <chr>   <dbl>        <dbl>
-#>  1 thrL  0.446              1
-#>  2 thrA  0.0568             1
-#>  3 thrB  0.106              1
-#>  4 thrC  0.00129            1
-#>  5 yaaX  0.260              1
-#>  6 yaaA  0.00376            1
-#>  7 yaaJ  0.00454            1
-#>  8 talB  0.0505             1
-#>  9 mog   0.00578            1
-#> 10 satP  0.0127             1
+#>    gene            p_value weight_value
+#>    <chr>             <dbl>        <dbl>
+#>  1 tesA             0.422             1
+#>  2 ybbA             0.372             1
+#>  3 ybbP             0.134             1
+#>  4 rhsD             0.183             1
+#>  5 ybbC             0.403             1
+#>  6 BW25113_RS02575  0.154             1
+#>  7 BW25113_RS24960  0.0474            1
+#>  8 BW25113_RS25970  0.584             1
+#>  9 ylbG             0.465             1
+#> 10 selU             0.0484            1
 #> # ℹ 490 more rows
 ```
 
@@ -96,20 +96,20 @@ testing problem ConNIS declared the follwing 13 genes as essential:
 
 ``` r
 results_ConNIS %>% filter(p_value <= 0.05/nrow(truncated_ecoli))
-#> # A tibble: 73 × 3
-#>    gene    p_value weight_value
-#>    <chr>     <dbl>        <dbl>
-#>  1 dnaK  4.71e- 17            1
-#>  2 rpsT  9.91e- 11            1
-#>  3 ribF  1.01e- 41            1
-#>  4 ileS  8.54e- 30            1
-#>  5 lspA  4.60e- 21            1
-#>  6 ispH  9.50e-  9            1
-#>  7 dapB  2.69e- 37            1
-#>  8 folA  6.27e- 21            1
-#>  9 lptD  9.96e-101            1
-#> 10 ftsL  3.61e-  6            1
-#> # ℹ 63 more rows
+#> # A tibble: 29 × 3
+#>    gene   p_value weight_value
+#>    <chr>    <dbl>        <dbl>
+#>  1 lpxH  5.07e-17            1
+#>  2 cysS  9.74e-34            1
+#>  3 ybcJ  4.47e- 5            1
+#>  4 folD  5.75e- 5            1
+#>  5 lipA  8.47e-14            1
+#>  6 mrdB  1.30e-26            1
+#>  7 mrdA  6.66e-46            1
+#>  8 nadD  1.06e-14            1
+#>  9 holA  2.79e-24            1
+#> 10 lptE  1.92e-14            1
+#> # ℹ 19 more rows
 ```
 
 Next, we re-run ConNIS with a smaller weight and apply again a the
@@ -125,20 +125,24 @@ results_ConNIS <-
        weight = 0.2)
 
 results_ConNIS %>% filter(p_value <= 0.05/nrow(truncated_ecoli))
-#> # A tibble: 45 × 3
+#> # A tibble: 15 × 3
 #>    gene   p_value weight_value
 #>    <chr>    <dbl>        <dbl>
-#>  1 ribF  3.08e-11          0.2
-#>  2 ileS  1.00e- 6          0.2
-#>  3 lspA  8.21e- 6          0.2
-#>  4 dapB  2.66e-10          0.2
-#>  5 folA  8.74e- 6          0.2
-#>  6 lptD  3.98e-19          0.2
-#>  7 ftsI  6.01e-15          0.2
-#>  8 murE  3.18e-19          0.2
-#>  9 murF  3.20e-10          0.2
-#> 10 mraY  8.17e-14          0.2
-#> # ℹ 35 more rows
+#>  1 lpxH  3.84e- 6          0.2
+#>  2 cysS  2.26e- 9          0.2
+#>  3 mrdB  4.38e- 9          0.2
+#>  4 mrdA  1.84e-12          0.2
+#>  5 nadD  4.88e- 6          0.2
+#>  6 holA  1.88e- 6          0.2
+#>  7 lptE  5.94e- 6          0.2
+#>  8 leuS  2.44e-18          0.2
+#>  9 lnt   7.56e- 5          0.2
+#> 10 lolA  5.37e- 6          0.2
+#> 11 serS  3.71e- 6          0.2
+#> 12 msbA  2.58e-12          0.2
+#> 13 kdsB  3.60e- 6          0.2
+#> 14 mukF  2.60e- 9          0.2
+#> 15 asnS  2.19e- 9          0.2
 ```
 
 Only 8 genes are declared essential since smaller weights will make it
@@ -178,11 +182,11 @@ out
 #> # A tibble: 5 × 2
 #>   weight_value instability
 #>          <dbl>       <dbl>
-#> 1          0.2      0.178 
-#> 2          0.4      0.129 
-#> 3          0.6      0.116 
-#> 4          0.8      0.0941
-#> 5          1        0.0880
+#> 1          0.2      0.166 
+#> 2          0.4      0.133 
+#> 3          0.6      0.0952
+#> 4          0.8      0.0867
+#> 5          1        0.0898
 ```
 
 You can also embed plots, for example:
