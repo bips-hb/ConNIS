@@ -20,7 +20,7 @@ is_pos <- which(is_count_neg+is_count_pos > 0)
 
 # make a less dense library
 set.seed(1)
-is_pos <- sample(is_pos, 100000)
+is_pos <- sample(is_pos, 100000, replace = F)
 
 # save data
 usethis::use_data(ecoli_bw25113, overwrite = TRUE)
