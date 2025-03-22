@@ -40,11 +40,11 @@ sites as an toy example for applying ConNIS.
 
 library(ConNIS)
 
-# Use the E. coli BW 25113 dataset but only the first 100 genes
+# Use the E. coli BW 25113 dataset but only the first 30 genes
 truncated_ecoli <- ecoli_bw25113[1:30,]
 
-# load the insertion sites by Goodall et al., 2018, but omit all insertion sites that 
-# do not lie within the genomic region of truncated_ecoli
+# load the insertion sites by Goodall et al., 2018, but omit all insertion sites 
+# that do not lie within the genomic region of truncated_ecoli
 truncated_is_pos <- sort(is_pos[is_pos <= max(truncated_ecoli$end) &
                            is_pos >= min(truncated_ecoli$start)])
 
@@ -74,7 +74,7 @@ results_ConNIS
 #> # ℹ 20 more rows
 ```
 
-Using the “Bonferroni-Holm correction” with $\alpha=0.05$ for multiple
+Using the “Bonferroni-Holm” correction with $\alpha=0.05$ for multiple
 testing problem ConNIS declared the follwing 12 genes as essential:
 
 ``` r
@@ -164,8 +164,8 @@ instabilities_connis
 #> 5          1         0.145
 ```
 
-Using the weight value with the minimal instability $w=0.6$ with ConNIS
-7 genes are declared essential:
+Using the weight value with the minimal instability $w=0.6$ is applied
+with ConNIS. 7 genes are declared essential:
 
 ``` r
 results_ConNIS <- 
