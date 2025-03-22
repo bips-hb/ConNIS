@@ -23,7 +23,7 @@ The `ConNIS` package provides multiple methods for determining essential genes b
 * the *Consecutive Non-Insertion Sites* (ConNIS) method (Hanke, et al., 2025)
 * an implementation of the *Binomial* approach  of the `TSAS 2.0`  package with an additional weigh parameter
 * an implementation of the *Tn5Gaps* method of the `TRANSIT` package with an additional weigh parameter
-* the determination of essential genes by applying the geometric distribution
+* the determination of essential genes by applying the *Geometric* distribution
 
 
 ## Installation
@@ -37,19 +37,19 @@ devtools::install_github("moritz-hanke/ConNIS")
 
 ## Example
 
-We use a truncated real world dataset and a list of truncated insertion sites as an example for applying ConNIS.
+We use a truncated real world dataset and a list of truncated insertion sites as an toy example for applying ConNIS.
 
 ```{r exampleRunConNIS}
 
 library(ConNIS)
 
 # Use the E. coli BW 25113 dataset but only the first 100 genes
-truncated_ecoli <- ecoli_bw25113[1:250,]
+truncated_ecoli <- ecoli_bw25113[1:30,]
 
-# load the insertion sites by Goodall, 2018, but omit all insertion sites that are
-# within the truncated_ecoli
-truncated_is_pos <- is_pos[is_pos <= max(truncated_ecoli$end) &
-                           is_pos >= min(truncated_ecoli$start)]
+# load the insertion sites by Goodall, 2018, but omit all insertion sites that 
+# do not lie within the genomic region of truncated_ecoli
+truncated_is_pos <- sort(is_pos[is_pos <= max(truncated_ecoli$end) &
+                           is_pos >= min(truncated_ecoli$start)])
 
 # run ConNIS with weight = 1
 results_ConNIS <- 
@@ -63,10 +63,10 @@ results_ConNIS <-
 results_ConNIS
 ```
 
-Using a simple "Bonferroni correction" with $\alpha=0.05$ for multiple testing problem ConNIS declared the follwing 21 genes as essential:
+Using the "Bonferroni-Holm correction" with $\alpha=0.05$ for multiple testing problem ConNIS declared the follwing 12 genes as essential:
 
 ```{r exampleGetSignificantGenes}
-results_ConNIS %>% filter(p_value <= 0.05/nrow(truncated_ecoli))
+results_ConNIS %>% filter(p.adjust(p_value, "BH") <= 0.05)
 ```
 
 Next, we re-run ConNIS with a smaller weight and apply again a the "Bonferroni" method.
@@ -80,30 +80,30 @@ results_ConNIS <-
        genome.length = max(truncated_ecoli$end), 
        weight = 0.2)
 
-results_ConNIS %>% filter(p_value <= 0.05/nrow(truncated_ecoli))
+results_ConNIS %>% filter(p.adjust(p_value, "BH") <= 0.05)
 
 ```
-16 genes are declared essential since smaller weights will make it harder to label a gene (by chance) as 'essential'. 
+6 genes are declared essential since smaller weights will make it harder to label a gene (by chance) as 'essential'. 
 
-Next, we give an example how to select a weight by the instability approach. We will use the parallel version of the function using `mclapply`. We use different weights. NOTE: We use only 100 subsamples for demonstration purpose. For real world applications we suggest $m \approx  500$ and parallel processing uization of the .
+Next, we give an example how to select a weight by the instability approach. We will use the parallel version of the function using `mclapply` and use 5 different weights. NOTE: Only 10 subsamples are drawn for demonstration purpose. For real world applications we suggest $m \approx  500$.
 
 ```{r instability}
 
 # set weight
 weights <- seq(0.2, 1, 0.2)
 
-out <- 
+instabilities_connis <- 
   instabilities(
   method="ConNIS", 
   sig.level = 0.05, 
-  p.adjust.mehtod = "bonferroni", 
+  p.adjust.mehtod = "BH", 
   ins.positions = truncated_is_pos, 
   gene.names = truncated_ecoli$gene, 
   gene.starts = truncated_ecoli$start, 
   gene.stops = truncated_ecoli$end, 
   genome.length = max(truncated_ecoli$end), 
   weights = weights, 
-  m = 100, 
+  m = 10, 
   d = 0.5, 
   use.parallelization = T, 
   parallelization.type = "mclapply", 
@@ -111,14 +111,19 @@ out <-
   seed = 1, 
   set.rng = "L'Ecuyer-CMRG")
 
-out
+instabilities_connis
 
 ```
+Using the weight value with the minimal instability we use $w=0.6$ with ConNIS:
 
-You can also embed plots, for example:
+```{r}
+results_ConNIS <- 
+  ConNIS(ins.positions = truncated_is_pos, 
+       gene.names = truncated_ecoli$gene, 
+       gene.starts = truncated_ecoli$start, 
+       gene.stops = truncated_ecoli$end, 
+       genome.length = max(truncated_ecoli$end), 
+       weight = 0.6)
 
-```{r pressure, echo = FALSE}
-#plot(pressure)
+results_ConNIS %>% filter(p.adjust(p_value, "BH") <= 0.05)
 ```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
