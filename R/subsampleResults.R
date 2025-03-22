@@ -346,7 +346,9 @@ subsampleResults <- function(method="ConNIS",
 
     }else{
 
-      # run subsample pricedure sequentally -  might be slow !!!
+
+
+      # run subsample approach sequentially -  might be slow !!!
       set.seed(seed)
 
       subsample_results <- lapply(X = 1:m, FUN =  function(i){
