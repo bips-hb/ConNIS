@@ -12,12 +12,12 @@ data driven determination of tuning/threshold value selection by the
 implementation of a subsample based instability approach. Currently the
 follwing methods are implemented:
 
-- the *Consecutive Non-Insertion Sites* (ConNIS) method (Hanke, et al.,
+- the *Consecutive Non-Insertion Sites* (ConNIS) method (Hanke et al.,
   2025)
 - an implementation of the *Binomial* approach of the `TSAS 2.0` package
-  with an additional weigh parameter
+  (Burger et al., 2017) with an additional weigh parameter
 - an implementation of the *Tn5Gaps* method of the `TRANSIT` package
-  with an additional weigh parameter
+  (DeJesus et al, 2015) with an additional weigh parameter
 - the determination of essential genes by applying the *Geometric*
   distribution
 
@@ -39,28 +39,11 @@ sites as an toy example for applying ConNIS.
 ``` r
 
 library(ConNIS)
-#> Loading required package: tibble
-#> Loading required package: dplyr
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-#> Loading required package: parallel
-#> Loading required package: gmp
-#> 
-#> Attaching package: 'gmp'
-#> The following objects are masked from 'package:base':
-#> 
-#>     %*%, apply, crossprod, matrix, tcrossprod
 
 # Use the E. coli BW 25113 dataset but only the first 100 genes
 truncated_ecoli <- ecoli_bw25113[1:30,]
 
-# load the insertion sites by Goodall, 2018, but omit all insertion sites that 
+# load the insertion sites by Goodall et al., 2018, but omit all insertion sites that 
 # do not lie within the genomic region of truncated_ecoli
 truncated_is_pos <- sort(is_pos[is_pos <= max(truncated_ecoli$end) &
                            is_pos >= min(truncated_ecoli$start)])
@@ -181,8 +164,8 @@ instabilities_connis
 #> 5          1         0.145
 ```
 
-Using the weight value with the minimal instability we use $w=0.6$ with
-ConNIS:
+Using the weight value with the minimal instability $w=0.6$ with ConNIS
+7 genes are declared essential:
 
 ``` r
 results_ConNIS <- 
@@ -205,3 +188,9 @@ results_ConNIS %>% filter(p.adjust(p_value, "BH") <= 0.05)
 #> 6 ispH  4.19e- 5          0.6
 #> 7 dapB  2.24e-21          0.6
 ```
+
+## References
+
+- `Burger, B. T., Imam, S., Scarborough, M. J., Noguera, D. R. & Donohue, T. J. Combining genome-scale experimental and computational methods to identify essential genes in rhodobacter sphaeroides. mSystems 2 (2017). URL http://dx. doi.org/10.1128/msystems.00015-17`
+- `DeJesus, M. A., Ambadipudi, C., Baker, R., Sassetti, C. & Ioerger, T. R. Transit - a software tool for himar1 tnseq analysis. PLOS Computational Biology 11, e1004401 (2015). URL http://dx.doi.org/10.1371/journal.pcbi.1004401`
+- `Goodall, E. C. A. et al. The essential genome of escherichia coli k-12. mBio 9 (2018). URL http://dx.doi.org/10.1128/mBio.02096-17.`
