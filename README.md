@@ -6,20 +6,19 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The `ConNIS` package provides multiple methods for determining essential
-genes based on insertion sites of *TraDIS* data. It also supports the
-data driven determination of tuning/threshold value selection by the
-implementation of a subsample based instability approach. Currently the
-follwing methods are implemented:
+The `ConNIS` package provides the implementation of the *Consecutive
+Non-Insertion Sites* (ConNIS) method (Hanke et al., 2025) which
+determines putative essential genes based on the probabilities to
+observe sequences of non-insertions within genes by chance. To set the
+weight value $w$ for adjusting the method for non-uniformaly distributed
+gene-wise insertion desists an instability approach is provided.
 
-- the *Consecutive Non-Insertion Sites* (ConNIS) method (Hanke et al.,
-  2025)
-- an implementation of the *Binomial* approach of the `TSAS 2.0` package
-  (Burger et al., 2017) with an additional weigh parameter
-- an implementation of the *Tn5Gaps* method of the `TRANSIT` package
-  (DeJesus et al, 2015) with an additional weigh parameter
-- the determination of essential genes by applying the *Geometric*
-  distribution
+In addition, the following methods are implemented in the package: \*
+the *Binomial* approach of the `TSAS 2.0` package (Burger et al., 2017)
+with an additional weigh parameter \* the *Tn5Gaps* method of the
+`TRANSIT` package (DeJesus et al, 2015) with an additional weigh
+parameter \* the determination of essential genes by applying the
+*Geometric* distribution with an additional weight parameter
 
 ## Installation
 
@@ -75,7 +74,7 @@ results_ConNIS
 ```
 
 Using the “Bonferroni-Holm” correction with $\alpha=0.05$ for multiple
-testing problem ConNIS declared the follwing 12 genes as essential:
+testing adjustment ConNIS declared the follwing 12 genes as essential:
 
 ``` r
 results_ConNIS %>% filter(p.adjust(p_value, "BH") <= 0.05)
@@ -96,7 +95,7 @@ results_ConNIS %>% filter(p.adjust(p_value, "BH") <= 0.05)
 #> 12 dapB  1.54e-30            1
 ```
 
-Next, we re-run ConNIS with a smaller weight and apply again a the
+Next, we re-run ConNIS with a smaller weight value and apply again a the
 “Bonferroni” method.
 
 ``` r
@@ -123,11 +122,11 @@ results_ConNIS %>% filter(p.adjust(p_value, "BH") <= 0.05)
 6 genes are declared essential since smaller weights will make it harder
 to label a gene (by chance) as ‘essential’.
 
-Next, we give an example how to select a weight by the instability
-approach. We will use the parallel version of the function using
-`mclapply` and use 5 different weights. NOTE: Only 10 subsamples are
-drawn for demonstration purpose. For real world applications we suggest
-$m \approx  500$.
+Next, we give an example for selecting `weight` our of five different
+values by the instability approach. We will use the function’s build-in
+parallelization option (`parallelization.type = "mclapply"`). NOTE: Only
+10 subsamples are drawn for demonstration purpose. For real world
+applications we suggest $m \approx  500$.
 
 ``` r
 
@@ -164,8 +163,8 @@ instabilities_connis
 #> 5          1         0.145
 ```
 
-Using the weight value with the minimal instability $w=0.6$ is applied
-with ConNIS. 7 genes are declared essential:
+Applying ConNIS again with the weight value that had the minimal
+instability, i.e. `weight = 0.6`, 7 genes are declared essential:
 
 ``` r
 results_ConNIS <- 
