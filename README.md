@@ -34,7 +34,7 @@ You can install the development version of ConNIS from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("moritz-hanke/ConNIS")
+devtools::install_github("https://github.com/bips-hb/ConNIS")
 ```
 
 ## Example
