@@ -18,13 +18,17 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The `ConNIS` package provides the implementation of the *Consecutive Non-Insertion Sites* (ConNIS) method (Hanke et al., 2025) which determines putative essential genes based on the probabilities to observe sequences of non-insertions within genes by chance. To set the weight value $w$ for adjusting the method for non-uniformaly distributed gene-wise insertion desists an instability approach is provided.
+The `ConNIS` package provides the implementation of the *Consecutive Non-Insertion Sites* (ConNIS) method (Hanke et al., 2025) which determines putative essential genes based on the probabilities to observe sequences of non-insertions within genes by chance. The method allows to set a weight value $w$ to adjust for non-uniformly distributed gene-wise insertion sites across the genome. For a data driven selection of $w$ an labeling instability approach is provided.
 
 In addition, the following methods are implemented in the package:
+
 * the *Binomial* approach  of the `TSAS 2.0`  package (Burger et al., 2017) with an additional weigh parameter
+
 * the *Tn5Gaps* method of the `TRANSIT` package (DeJesus et al, 2015) with an additional weigh parameter
+
 * the determination of essential genes by applying the *Geometric* distribution with an additional weight parameter
 
+Each of this method can be adjusted by $w$, too.
 
 ## Installation
 
