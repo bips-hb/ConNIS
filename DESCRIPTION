@@ -8,7 +8,7 @@ Description: For each gene of a Tn5 trasnposon the probability of the biggest ob
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Depends:
     tibble (>= 3.2.1),
     dplyr (>= 1.1.4),

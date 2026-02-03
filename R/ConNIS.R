@@ -48,125 +48,161 @@ ConNIS <- function(ins.positions,
                    num.ins.per.gene = NULL,
                    genome.length,
                    weight = 1) {
-  if (is.null(num.ins.per.gene)) {
-    if (!length(unique(
-      c(
-        length(gene.names),
-        length(gene.starts),
-        length(gene.stops)
-      )
-    )) == 1) {
-      stop("Different lengths of gene.names, gene.starts and gene.stops")
-    }
-
-    num.ins.per.gene <- sapply(seq(gene.starts), function(start_i) {
-      sum(ins.positions >= gene.starts[start_i] &
-        ins.positions <= gene.stops[start_i])
-    })
+  
+  # Input checks
+  if(length(gene.names) != length(gene.starts) || length(gene.names) != length(gene.stops)) {
+    stop("Different lengths of gene.names, gene.starts and gene.stops")
+  }
+  
+  gene.starts <- as.integer(gene.starts)
+  gene.stops  <- as.integer(gene.stops)
+  
+  ins_sites <- sort(unique(as.integer(ins.positions)))
+  M <- length(ins_sites)
+  G <- length(gene.names)
+  
+  observed_genome_insertion_density <- M / genome.length
+  
+  # find slice indices per gene in O(G log M) 
+  # For each gene interval [start, stop], compute indices of ins_sites within it:
+  # left = first index with ins_sites >= start
+  # right = last  index with ins_sites <= stop
+  if(M > 0L) {
+    left  <- findInterval(gene.starts - 1L, ins_sites) + 1L
+    right <- findInterval(gene.stops,       ins_sites)
   } else {
-    if (!length(unique(
-      c(
-        length(gene.names),
-        length(gene.starts),
-        length(gene.stops),
-        length(num.ins.per.gene)
-      )
-    )) == 1) {
+    # No insertion sites in the entire genome
+    left  <- rep.int(1L, G)
+    right <- rep.int(0L, G)
+  }
+  
+  # compute num.ins.per.gene with slice indices 
+  if(is.null(num.ins.per.gene)) {
+    num.ins.per.gene <- pmax(0L, right - left + 1L)
+  } else {
+    if(length(num.ins.per.gene) != G) {
       stop("Different lengths of gene.names, gene.starts, gene.stops and num.ins.per.gene")
     }
+    num.ins.per.gene <- as.integer(num.ins.per.gene)
   }
-
-  ins_sites <- sort(ins.positions)
-
-  observed_genome_insertion_densitiy <-
-    length(ins_sites) / genome.length
-
-  results_per_gene <- lapply(seq_along(gene.names), function(i) {
-    gene_i_start <-
-      gene.starts[i]
-
-    gene_i_stop <-
-      gene.stops[i]
-
-    gene_i_length <- gene_i_stop - gene_i_start + 1
-
-    expected_num_IS_gene_i <-
-      floor(gene_i_length * observed_genome_insertion_densitiy)
-
-    gene_i_num_ins <- num.ins.per.gene[i]
-
-    max_gap <- max(
-      diff(
-        unique(
-          c(
-            gene_i_start - 1,
-            ins_sites[ins_sites >= gene_i_start & ins_sites <= gene_i_stop],
-            gene_i_stop + 1
-          )
-        )
-      )
-    )
-    max_gap <- min(gene_i_length, max_gap)
-
-    # applying ConNIS for gaps <= 1000 can be speed up by reversing the problem
-
-    if (max_gap > 1000) {
-      probs <-
-        prob_seq_misses(
-          gene_i_length,
-          gene_i_length -
-            expected_num_IS_gene_i * weight
-        )
-      p_value <-
-        sum(probs[max_gap:(gene_i_length -
-          expected_num_IS_gene_i * weight)])
-
-      if (gene_i_length == gene_i_num_ins) {
-        p_value <- 1
-      }
-      if (max_gap >= gene_i_length - expected_num_IS_gene_i * weight) {
-        p_value <- probs[length(probs)]
-      }
-    } else {
-      if (gene_i_length == gene_i_num_ins) {
-        p_value <- 1
-      }
-      if (max_gap >= gene_i_length - expected_num_IS_gene_i * weight) {
-        p_value <-
-          as.numeric(chooseZ(
-            gene_i_length - (gene_i_length - expected_num_IS_gene_i * weight) - 1,
-            gene_i_length - expected_num_IS_gene_i * weight -
-              (gene_i_length - expected_num_IS_gene_i * weight)
-          ) /
-            chooseZ(
-              gene_i_length - 1,
-              gene_i_length - expected_num_IS_gene_i * weight - 1
-            ))
-      } else {
-        probs <-
-          sapply(1:(max_gap - 1), function(s) {
-            as.numeric(chooseZ(
-              gene_i_length - s - 1,
-              gene_i_length - expected_num_IS_gene_i * weight - s
-            ) /
-              chooseZ(
-                gene_i_length - 1,
-                gene_i_length - expected_num_IS_gene_i * weight - 1
-              ))
-          })
-
-        p_value <- 1 - sum(probs)
-      }
+  
+  
+  p_values <- numeric(G)
+  
+  # Helper: compute f(k) = 1 / choose(n-1, k-1) using gmp::chooseZ (big integer)
+  f_at_k <- function(n, k) {
+    # If k == 1, then choose(n-1, 0)=1 => f(k)=1
+    if(k <= 1L) return(1)
+    as.numeric(1 / chooseZ(n - 1L, k - 1L))
+  }
+  
+  # Per-gene loop
+  for (i in seq_len(G)) {
+    
+    start <- gene.starts[i]
+    stop  <- gene.stops[i]
+    n     <- as.integer(stop - start + 1L)        # gene length
+    ins_n <- num.ins.per.gene[i]                  # observed insertions in gene
+    
+    # Expected number of insertion sites under non-essentiality
+    expected_num_IS <- as.integer(floor(n * observed_genome_insertion_density))
+    
+    # k = number of empty urns
+    k <- as.integer(n - expected_num_IS * weight)
+    
+    # The urn model requires 1 <= k <= n.
+    if(k < 1L){
+      k <- 1L
     }
-
-    tibble(
-      gene = gene.names[i],
-      p_value = p_value,
-      weight_value = weight
-    )
-  })
-
-  results_per_gene <- do.call(rbind, results_per_gene)
-  results_per_gene
+    if(k > n){
+      k <- n
+    }
+    
+    # Compute max_gap using slice
+    # use indices [left[i], right[i]] precomputed via findInterval().
+    if(left[i] <= right[i]){
+      ins_g <- ins_sites[left[i]:right[i]]
+      gaps  <- diff(c(start - 1L, ins_g, stop + 1L))
+    }else{
+      # No insertions in this gene interval
+      gaps <- n + 1L  
+    }
+    
+    max_gap <- max(gaps)
+    if(max_gap > n){
+      max_gap <- n
+    }  
+    
+    # --- Handle trivial case: insertion at every base of the gene (as in your original code) ---
+    if(n == ins_n) {
+      p_values[i] <- 1
+      next
+    }
+    
+    # If max_gap >= k, then p-value is just P(S = k) (tail is single point).
+    # compute f(k) once via chooseZ (big integer safe), no full prob vector.
+    if(max_gap >= k) {
+      p_values[i] <- f_at_k(n, k)
+      next
+    }
+    
+    # Compute p-value
+    # p_value = P(S >= max_gap) = sum_{s=max_gap}^{k} f(s, n, k)
+    # If max_gap is small, compute complement: 1 - sum_{s=1}^{max_gap-1} f(s)
+    # If max_gap is large, compute the tail directly via backward recurrence from f(k)
+    
+    if(max_gap <= 1000L) {
+      
+      # Complement approach: p = 1 - sum_{s=1}^{max_gap-1} f(s)
+      # Start value:
+      # f(1) = C(n-2, k-1) / C(n-1, k-1) = (n - k) / (n - 1)
+      # (simple ratio, no gmp required)
+      if(n <= 1L) {
+        # degenerate gene length
+        p_values[i] <- 1
+        next
+      }
+      
+      f_s <- (n - k) / (n - 1L)
+      sum_small <- f_s
+      
+      # Recurrence:
+      # f(s+1) = f(s) * (k - s) / (n - s - 1)
+      # accumulate s=1..(max_gap-2) to cover up to (max_gap-1)
+      if(max_gap > 2L) {
+        for (s in 1L:(max_gap - 2L)) {
+          f_s <- f_s * (k - s) / (n - s - 1L)
+          sum_small <- sum_small + f_s
+        }
+      }
+      
+      p_values[i] <- 1 - sum_small
+      
+    }else{
+      
+      # Tail approach (reverse the problem) without generating all probabilities:
+      # Compute f(k) = 1 / C(n-1, k-1) via chooseZ, then walk backwards:
+      # f(s) = f(s+1) * (n - s - 1) / (k - s)
+      # This sums only (k - max_gap + 1) terms.
+      f_next <- f_at_k(n, k)  # f(k)
+      tail_sum <- f_next
+      
+      # s = k-1 down to max_gap
+      if(k - 1L >= max_gap) {
+        for (s in (k - 1L):max_gap) {
+          f_next <- f_next * (n - s - 1L) / (k - s)
+          tail_sum <- tail_sum + f_next
+        }
+      }
+      
+      p_values[i] <- tail_sum
+    }
+  }
+  
+  tibble::tibble(
+    gene = gene.names,
+    p_value = p_values,
+    weight_value = weight
+  )
 }
 
