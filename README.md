@@ -4,6 +4,7 @@
 # ConNIS <img src="./man/figures/logo.svg" alt="ConNIS" align="right" width="120"/>
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 The `ConNIS` package provides the implementation of the *Consecutive
@@ -144,7 +145,7 @@ instabilities_connis <-
   instabilities(
   method="ConNIS", 
   sig.level = 0.05, 
-  p.adjust.mehtod = "BH", 
+  p.adjust.method = "BH", 
   ins.positions = truncated_is_pos, 
   gene.names = truncated_ecoli$gene, 
   gene.starts = truncated_ecoli$start, 
@@ -163,11 +164,11 @@ instabilities_connis
 #> # A tibble: 5 × 2
 #>   weight_value instability
 #>          <dbl>       <dbl>
-#> 1          0.2       0.148
-#> 2          0.4       0.16 
-#> 3          0.6       0.138
-#> 4          0.8       0.149
-#> 5          1         0.145
+#> 1          0.2       0.15 
+#> 2          0.4       0.165
+#> 3          0.6       0.126
+#> 4          0.8       0.13 
+#> 5          1         0.134
 ```
 
 Applying ConNIS again with the weight value that had the minimal

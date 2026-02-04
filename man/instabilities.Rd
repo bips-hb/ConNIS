@@ -7,7 +7,7 @@
 instabilities(
   method = "ConNIS",
   sig.level = 0.05,
-  p.adjust.mehtod = "bonferroni",
+  p.adjust.method = "bonferroni",
   ins.positions,
   gene.names,
   gene.starts,
@@ -33,7 +33,7 @@ instabilities(
 \item{sig.level}{Significance level that is applied for determining if a gene
 is essentially}
 
-\item{p.adjust.mehtod}{Adjustment method for the p.value for handeling
+\item{p.adjust.method}{Adjustment method for the p.value for handeling
 multiple testing. It uses the \code{stats} R function \code{p.adjust()}. Available values
 are \code{"holm"}, \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"}, \code{"BH"}, \code{"BY"},
 \code{"fdr"} and \code{"none"}. See \code{?p.adjust} for further details.}
@@ -107,7 +107,7 @@ genome_length <- 10000
 # run instability approach with ConNIS (sequential)
 instabilities(method="ConNIS",
                   sig.level = 0.05,
-                  p.adjust.mehtod = "bonferroni",
+                  p.adjust.method = "bonferroni",
                   ins.positions = random_is,
                   gene.names = genes,
                   gene.starts = starts,
@@ -125,7 +125,7 @@ instabilities(method="ConNIS",
 \dontrun{
 instabilities(method="ConNIS",
                   sig.level = 0.05,
-                  p.adjust.mehtod = "bonferroni",
+                  p.adjust.method = "bonferroni",
                   ins.positions = random_is,
                   gene.names = genes,
                   gene.starts = starts,
