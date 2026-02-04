@@ -100,7 +100,7 @@ instabilities_connis <-
   instabilities(
   method="ConNIS", 
   sig.level = 0.05, 
-  p.adjust.mehtod = "BH", 
+  p.adjust.method = "BH", 
   ins.positions = truncated_is_pos, 
   gene.names = truncated_ecoli$gene, 
   gene.starts = truncated_ecoli$start, 

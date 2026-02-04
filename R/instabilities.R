@@ -28,7 +28,7 @@
 #' `"Binomial"`, `"ConNIS"`, `"Geometric"` and `"Tn5Gaps"`.
 #' @param sig.level Significance level that is applied for determining if a gene
 #' is essentially
-#' @param p.adjust.mehtod Adjustment method for the p.value for handeling
+#' @param p.adjust.method Adjustment method for the p.value for handeling
 #' multiple testing. It uses the `stats` R function `p.adjust()`. Available values
 #' are `"holm"`, `"hochberg"`, `"hommel"`, `"bonferroni"`, `"BH"`, `"BY"`,
 #' `"fdr"` and `"none"`. See `?p.adjust` for further details.
@@ -81,7 +81,7 @@
 #' # run instability approach with ConNIS (sequential)
 #' instabilities(method="ConNIS",
 #'                   sig.level = 0.05,
-#'                   p.adjust.mehtod = "bonferroni",
+#'                   p.adjust.method = "bonferroni",
 #'                   ins.positions = random_is,
 #'                   gene.names = genes,
 #'                   gene.starts = starts,
@@ -99,7 +99,7 @@
 #' \dontrun{
 #' instabilities(method="ConNIS",
 #'                   sig.level = 0.05,
-#'                   p.adjust.mehtod = "bonferroni",
+#'                   p.adjust.method = "bonferroni",
 #'                   ins.positions = random_is,
 #'                   gene.names = genes,
 #'                   gene.starts = starts,
@@ -119,7 +119,7 @@
 instabilities <- function(
     method="ConNIS",
     sig.level = 0.05,
-    p.adjust.mehtod = "bonferroni",
+    p.adjust.method = "bonferroni",
     ins.positions,
     gene.names,
     gene.starts,
@@ -161,7 +161,7 @@ instabilities <- function(
 
     do.call(rbind, sub_results) %>%
       group_by(.data$subsample_number) %>%
-      mutate(p_value_adjusted = p.adjust(.data$p_value, method = p.adjust.mehtod)) %>%
+      mutate(p_value_adjusted = p.adjust(.data$p_value, method = p.adjust.method)) %>%
       mutate(ess = .data$p_value_adjusted <= sig.level) %>%
       group_by(.data$gene) %>%
       reframe(mean_ess = sum(.data$ess)/length(unique(.data$subsample_number))) %>%
